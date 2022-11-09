@@ -25,7 +25,7 @@ SceneWidget::SceneWidget(QWidget* parent)
 {
     setRenderWindow(_renderWindow.Get());
     setupRender();
-    setupGPU();
+    setupProperty();
 
 
     int Z = 225;
@@ -124,7 +124,7 @@ void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
 
     generateSpline();
 
-    _volume->SetProperty(_volumeProperty);
+    setupProperty();
 
     renderWindow()->Render();
 }
@@ -165,7 +165,7 @@ void SceneWidget::setupRender()
     _renderer->GetActiveCamera()->Azimuth(90);
 }
 
-void SceneWidget::setupGPU()
+void SceneWidget::setupProperty()
 {
     double wl_ = 1830.0;
     double ww_ = 140.0;

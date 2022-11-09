@@ -72,7 +72,7 @@ public:
     /// <summary>
     /// Setup vtkGPUVolumeRayCastMapper, vtkColorTransferFunction, vtkPiecewiseFunction
     /// </summary>
-    void setupGPU();
+    void setupProperty();
     /// <summary>
     /// Remove the data set from the scene
     /// </summary>
