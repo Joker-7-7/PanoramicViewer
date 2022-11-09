@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>doc/zoom.png</file>
+        <file>doc/openFile.png</file>
+    </qresource>
+</RCC>
