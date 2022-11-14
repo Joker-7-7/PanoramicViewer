@@ -29,7 +29,8 @@ SceneWidget::SceneWidget(QWidget* parent)
 
 
     int Z = 225;
-
+    vecPointsForSpline.emplace_back(Point{ 129, 385, Z });
+    vecPointsForSpline.emplace_back(Point{ 148, 323, Z });
     vecPointsForSpline.emplace_back(Point{ 157, 290, Z });
     vecPointsForSpline.emplace_back(Point{ 165, 250, Z });
     vecPointsForSpline.emplace_back(Point{ 167, 204, Z });

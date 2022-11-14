@@ -2,6 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <vtkDataSetReader.h>
+#include <vtkGlobFileNames.h>
+#include <vtkDICOMFileSorter.h>
+#include <vtkImageReader2.h>
+#include <vtkDICOMReader.h>
+
 
 namespace Ui {
 class MainWindow;
@@ -11,6 +17,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
+    void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet);
     explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
@@ -36,6 +43,8 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_4_clicked();
+
+    void on_verticalSlider_sliderMoved(int position);
 
 private:
     Ui::MainWindow* ui;

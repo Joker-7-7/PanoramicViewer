@@ -6,11 +6,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
-#include <vtkDataSetReader.h>
-#include <vtkGlobFileNames.h>
-#include <vtkDICOMFileSorter.h>
-#include <vtkImageReader2.h>
-#include <vtkDICOMReader.h>
+
 
 namespace
 {
@@ -115,34 +111,54 @@ void MainWindow::openFile(const QString& item)
         // Add data set to 3D view
         if (dataSet != nullptr)
         {
-            ui->openGLWidgetScene->addDataSet(dataSet);
+            addDataSet(dataSet);
         }
+}
+
+
+void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
+{
+    ui->openGLSceneWidget->addDataSet(dataSet);
+    ui->openGLSliceXYWidget->addDataSet(dataSet);
+
+   ui->verticalSlider->setMaximum(ui->openGLSliceXYWidget->_reslicer->GetSliceMax());
+   ui->verticalSlider->setValue(ui->openGLSliceXYWidget->_reslicer->GetSliceMax() / 2);
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    ui->openGLWidgetScene->setRentgenEffects();
-    ui->openGLWidgetScene->renderWindow()->Render();
+    ui->openGLSceneWidget->setRentgenEffects();
+    ui->openGLSceneWidget->renderWindow()->Render();
 }
 
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    ui->openGLWidgetScene->setSolidEffects();
-    ui->openGLWidgetScene->renderWindow()->Render();
+    ui->openGLSceneWidget->setSolidEffects();
+    ui->openGLSceneWidget->renderWindow()->Render();
 }
 
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    ui->openGLWidgetScene->setMaxIntensity();
-    ui->openGLWidgetScene->renderWindow()->Render();
+    ui->openGLSceneWidget->setMaxIntensity();
+    ui->openGLSceneWidget->renderWindow()->Render();
 }
 
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    ui->openGLWidgetScene->setMinIntensity();
-    ui->openGLWidgetScene->renderWindow()->Render();
+    ui->openGLSceneWidget->setMinIntensity();
+    ui->openGLSceneWidget->renderWindow()->Render();
+}
+
+
+void MainWindow::on_verticalSlider_sliderMoved(int position)
+{
+    if(ui->openGLSliceXYWidget->_reslicer != nullptr)
+    {
+        ui->openGLSliceXYWidget->_reslicer->SetSlice(position);
+        ui->openGLSliceXYWidget->renderWindow()->Render();
+    }
 }
 
