@@ -27,7 +27,6 @@ SceneWidget::SceneWidget(QWidget* parent)
     setupRender();
     setupProperty();
 
-
     int Z = 225;
     vecPointsForSpline.emplace_back(Point{ 129, 385, Z });
     vecPointsForSpline.emplace_back(Point{ 148, 323, Z });
@@ -48,6 +47,7 @@ SceneWidget::SceneWidget(QWidget* parent)
     vecPointsForSpline.emplace_back(Point{ 394, 249, Z });
     vecPointsForSpline.emplace_back(Point{ 409, 310, Z });
     vecPointsForSpline.emplace_back(Point{ 420, 344, Z });
+    vecPointsForSpline.emplace_back(Point{ 443, 385, Z });
 }
 
 
@@ -158,10 +158,10 @@ void SceneWidget::setupRender()
     renderWindow()->AddRenderer(_renderer);
     renderWindow()->GetInteractor()->SetDesiredUpdateRate(_desiredUpdateRate);
 
-    vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
-        vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
-    style->PickingManagedOff();
-    renderWindow()->GetInteractor()->SetInteractorStyle(style);
+    //vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
+    //    vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
+    //style->PickingManagedOff();
+    //renderWindow()->GetInteractor()->SetInteractorStyle(style);
 
     _renderer->GetActiveCamera()->Azimuth(90);
 }

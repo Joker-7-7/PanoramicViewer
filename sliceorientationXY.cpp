@@ -43,7 +43,7 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
 
     std::vector<PointSpline> vecPointsForSpline;
 //    vecPointsForSpline.emplace_back(PointSpline{ 114, 440, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 142, 353, Z });
+    vecPointsForSpline.emplace_back(PointSpline{ 129, 385, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 148, 323, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 157, 290, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 165, 250, Z });
@@ -62,6 +62,7 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
     vecPointsForSpline.emplace_back(PointSpline{ 394, 249, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 409, 310, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 420, 344, Z });
+    vecPointsForSpline.emplace_back(PointSpline{ 443, 385, Z });
  //   vecPointsForSpline.emplace_back(PointSpline{ 424, 380, Z });
   //  vecPointsForSpline.emplace_back(PointSpline{ 432, 408, Z });
   //  vecPointsForSpline.emplace_back(PointSpline{ 442, 429, Z });
