@@ -158,10 +158,10 @@ void SceneWidget::setupRender()
     renderWindow()->AddRenderer(_renderer);
     renderWindow()->GetInteractor()->SetDesiredUpdateRate(_desiredUpdateRate);
 
-    //vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
-    //    vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
-    //style->PickingManagedOff();
-    //renderWindow()->GetInteractor()->SetInteractorStyle(style);
+    vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
+        vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
+    style->PickingManagedOff();
+    renderWindow()->GetInteractor()->SetInteractorStyle(style);
 
     _renderer->GetActiveCamera()->Azimuth(90);
 }
