@@ -1,9 +1,9 @@
 #include "sliceorientationXY.h"
-
+#include <QCoreApplication.h>
 
 
 SliceOrientationXY::SliceOrientationXY(QWidget* parent)
-    : QVTKOpenGLNativeWidget(parent), _backgroundColor{ 0.0, 0.0, 0. }
+    : QVTKOpenGLNativeWidget(parent), _backgroundColor{ 0.0, 0.0, 0. }, _visibilitySpline(SplineVisibility::VisibilityOn)
 {
     setRenderWindow(_renderWindow.Get());
     setupRender();
@@ -25,8 +25,7 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
     removeDataSet();
     _reader = reader;
 
-    vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-    _reslicer->SetupInteractor(renderWindowInteractor);
+    _reslicer->SetupInteractor(_renderWindowInteractor);
     _reslicer->SetRenderWindow(_renderWindow);
     _reslicer->SliceScrollOnMouseWheelOff();
     _reslicer->SetSliceOrientationToXY();
@@ -35,14 +34,32 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
     _reslicer->SetResliceModeToAxisAligned();
     _reslicer->SetColorLevel(40.0);
     _reslicer->SetSlice(_reslicer->GetSliceMax() / 2);
-    _reslicer->SetColorWindow(4000.0);
+    _reslicer->SetColorWindow(10000.0);
     _reslicer->SetResliceMode(0);
 
+    CreateSpline();
+    _renderer->ResetCamera();
+    renderWindow()->Render();
+}
 
-    int Z = _reslicer->GetSliceMax();
+void SliceOrientationXY::setupRender()
+{
+    // Setup rendering stuff
+    _renderer->SetBackground(_backgroundColor);
+
+    // link render and render window
+   _renderWindow->SetSize(_renderWindow->GetScreenSize());
+
+    // Setup interactor style
+    renderWindow()->GetInteractor()->SetRenderWindow(_renderWindow);
+    renderWindow()->AddRenderer(_renderer);
+}
+
+void SliceOrientationXY::CreateSpline()
+{
+    int Z = _reslicer->GetSliceMax();;// _reslicer->GetSliceMax();
 
     std::vector<PointSpline> vecPointsForSpline;
-//    vecPointsForSpline.emplace_back(PointSpline{ 114, 440, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 129, 385, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 148, 323, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 157, 290, Z });
@@ -63,9 +80,7 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
     vecPointsForSpline.emplace_back(PointSpline{ 409, 310, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 420, 344, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 443, 385, Z });
- //   vecPointsForSpline.emplace_back(PointSpline{ 424, 380, Z });
-  //  vecPointsForSpline.emplace_back(PointSpline{ 432, 408, Z });
-  //  vecPointsForSpline.emplace_back(PointSpline{ 442, 429, Z });
+
     vtkImageData* imageCurrentData_ = _reader->GetOutput();
     vtkNew<vtkPoints> points;
     for (int i = 0; i < vecPointsForSpline.size(); ++i)
@@ -76,33 +91,30 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
         points->InsertNextPoint(tmpPoint);
     }
 
-    vtkNew<vtkParametricSpline> spline;
-    spline->SetPoints(points);
-
-    vtkNew<vtkParametricFunctionSource> functionSource;
-    functionSource->SetParametricFunction(spline);
-    functionSource->Update();
-    vtkNew<vtkPolyDataMapper> splineMapper;
-    splineMapper->SetInputConnection(functionSource->GetOutputPort());
-    vtkNew<vtkActor> splineActor;
-    splineActor->SetMapper(splineMapper);
-    splineActor->GetProperty()->SetLineWidth(2.0f);
-    splineActor->GetProperty()->SetColor(1.0, 0.0, 0.0);
-    _renderer->AddActor(splineActor);
+    _renderInteractorForSpline->SetRenderWindow(_renderWindow);
+    splineWidget->SetInteractor(_renderInteractorForSpline);
+    splineWidget->InitializeHandles(points);
+    splineWidget->SetCurrentRenderer(_renderer);
+    splineWidget->SetHandleSize(0.008);
+    splineWidget->On();
 
     _renderer->ResetCamera();
     renderWindow()->Render();
 }
 
-void SliceOrientationXY::setupRender()
+
+void SliceOrientationXY::setSplineWidget()
 {
-    // Setup rendering stuff
-    _renderer->SetBackground(_backgroundColor);
-
-    // link render and render window
-    _renderWindow->SetSize(_renderWindow->GetScreenSize());
-
-    // Setup interactor style
-    renderWindow()->GetInteractor()->SetRenderWindow(_renderWindow);
-    renderWindow()->AddRenderer(_renderer);
+    if (_visibilitySpline == SplineVisibility::VisibilityOff)
+    {
+        splineWidget->On();
+        _visibilitySpline = SplineVisibility::VisibilityOn;
+    }
+    else
+    {
+        splineWidget->Off();
+        _visibilitySpline = SplineVisibility::VisibilityOff;
+    }
+    _renderer->ResetCamera();
+    renderWindow()->Render();
 }

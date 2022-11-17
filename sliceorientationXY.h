@@ -21,6 +21,13 @@ struct PointSpline
     int y;
     int z;
 };
+
+enum class SplineVisibility
+{
+    VisibilityOn = 0,
+    VisibilityOff = 1
+};
+
 class SliceOrientationXY : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 
@@ -35,6 +42,10 @@ public:
     vtkNew<vtkGenericOpenGLRenderWindow> _renderWindow;
     // reader for DICOM 
     vtkSmartPointer<vtkImageReader2> _reader;
+
+    SplineVisibility _visibilitySpline;
+    vtkNew<vtkRenderWindowInteractor> _renderWindowInteractor;
+    vtkNew<vtkRenderWindowInteractor> _renderInteractorForSpline;
 
 public:
     explicit SliceOrientationXY(QWidget* parent = nullptr);
@@ -54,7 +65,8 @@ public:
     /// Setup m_ptrRenderer, m_ptrRenderWindow, m_ptrIinteractor
     /// </summary>
     void setupRender();
-
+    void setSplineWidget();
+    void CreateSpline();
 };
 
 

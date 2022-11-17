@@ -46,6 +46,8 @@ private slots:
 
     void on_verticalSlider_sliderMoved(int position);
 
+    void on_pushButton_5_clicked();
+
 private:
     Ui::MainWindow* ui;
 };
