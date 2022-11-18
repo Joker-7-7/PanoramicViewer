@@ -25,6 +25,7 @@
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkBoxRepresentation.h>
 #include <vtkImageData.h>
+#include <vtkParametricSpline.h>
 
 struct Point
 {
@@ -78,7 +79,9 @@ public:
     /// </summary>
     void removeDataSet();
 
-    void generateSpline();
+    void generatePanoramicView(vtkParametricSpline* spline);
+
+    void createSpline();
 
     void setRentgenEffects();
 

@@ -51,20 +51,26 @@ SceneWidget::SceneWidget(QWidget* parent)
 }
 
 
-void SceneWidget::generateSpline()
+void SceneWidget::createSpline()
 {
-    vtkImageData* imageCurrentData_ = _reader->GetOutput();
-    vtkNew<vtkPoints> points;
-    for (int i = 0; i < vecPointsForSpline.size(); ++i)
-    {
-        double tmpPoint[3];
 
-        imageCurrentData_->TransformIndexToPhysicalPoint(reinterpret_cast<int*>(&vecPointsForSpline[i]), tmpPoint);
-        points->InsertNextPoint(tmpPoint);
-    }
+}
 
-    vtkNew<vtkParametricSpline> spline;
-    spline->SetPoints(points);
+
+void SceneWidget::generatePanoramicView(vtkParametricSpline* spline)
+{
+    //vtkImageData* imageCurrentData_ = _reader->GetOutput();
+    //vtkNew<vtkPoints> points;
+    //for (int i = 0; i < vecPointsForSpline.size(); ++i)
+    //{
+    //    double tmpPoint[3];
+
+    //    imageCurrentData_->TransformIndexToPhysicalPoint(reinterpret_cast<int*>(&vecPointsForSpline[i]), tmpPoint);
+    //    points->InsertNextPoint(tmpPoint);
+    //}
+
+    //vtkNew<vtkParametricSpline> spline;
+    //spline->SetPoints(points);
 
     int numberOfPoints = 20;
     vtkNew<vtkParametricFunctionSource> functionSource;
@@ -106,16 +112,18 @@ void SceneWidget::generateSpline()
 
 
 
-    vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
-    mapper->SetInputConnection(append->GetOutputPort());
-    mapper->SetMaximumImageSampleDistance(1.0);
-    mapper->UseJitteringOn();
+    //vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
+    //mapper->SetInputConnection(append->GetOutputPort());
+    //mapper->SetMaximumImageSampleDistance(1.0);
+    //mapper->UseJitteringOn();
 
 
-    _volume->SetMapper(mapper);
+    _volume->GetMapper()->SetInputConnection(append->GetOutputPort());
 
     _renderer->AddVolume(_volume);
     _renderer->ResetCamera();
+
+    renderWindow()->Render();
 }
 void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
 {
@@ -123,11 +131,18 @@ void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
 
     setupReader(reader);
 
-    generateSpline();
+   // generatePanoramicView();
 
     setupProperty();
 
-    renderWindow()->Render();
+    vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
+    mapper->SetMaximumImageSampleDistance(1.0);
+    mapper->UseJitteringOn();
+
+
+    _volume->SetMapper(mapper);
+
+   // renderWindow()->Render();
 }
 
 void SceneWidget::removeDataSet()

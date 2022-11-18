@@ -15,6 +15,21 @@
 #include <vtkProperty.h>
 #include <vtkImageData.h>
 
+#include "scenewidget.h"
+
+namespace
+{
+    void SplinePanoramicUpdateCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
+        void* clientData, void* vtkNotUsed(callData))
+    {
+        vtkSplineWidget* splineWidget = static_cast<vtkSplineWidget*>(caller);
+        SceneWidget* panoramicView = static_cast<SceneWidget*>(clientData);
+
+        panoramicView->generatePanoramicView(splineWidget->GetParametricSpline());
+    }
+}
+
+
 struct PointSpline
 {
     int x;
@@ -47,6 +62,7 @@ public:
     vtkNew<vtkRenderWindowInteractor> _renderWindowInteractor;
     vtkNew<vtkRenderWindowInteractor> _renderInteractorForSpline;
 
+    SceneWidget* _panoramicView;
 public:
     explicit SliceOrientationXY(QWidget* parent = nullptr);
 
@@ -54,7 +70,7 @@ public:
     /// Add a data set to the scene
     /// </summary>
     /// <param name="param[in] dataSet The data set to add"></param>
-    void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet);
+    void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView);
 
     /// <summary>
     /// Remove the data set from the scene
@@ -67,6 +83,8 @@ public:
     void setupRender();
     void setSplineWidget();
     void CreateSpline();
+    void CreateSplineModifiCallback();
+
 };
 
 

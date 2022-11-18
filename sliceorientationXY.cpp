@@ -1,6 +1,6 @@
 #include "sliceorientationXY.h"
 #include <QCoreApplication.h>
-
+#include <vtkCallbackCommand.h>
 
 SliceOrientationXY::SliceOrientationXY(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent), _backgroundColor{ 0.0, 0.0, 0. }, _visibilitySpline(SplineVisibility::VisibilityOn)
@@ -20,8 +20,9 @@ void SliceOrientationXY::removeDataSet()
 }
 
 
-void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
+void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader, SceneWidget* panoramicView)
 {
+    _panoramicView = panoramicView;
     removeDataSet();
     _reader = reader;
 
@@ -37,7 +38,10 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
     _reslicer->SetColorWindow(10000.0);
     _reslicer->SetResliceMode(0);
 
+
     CreateSpline();
+    CreateSplineModifiCallback();
+    
     _renderer->ResetCamera();
     renderWindow()->Render();
 }
@@ -55,9 +59,21 @@ void SliceOrientationXY::setupRender()
     renderWindow()->AddRenderer(_renderer);
 }
 
+
+void SliceOrientationXY::CreateSplineModifiCallback()
+{
+    splineWidget->RemoveAllObservers();
+    vtkNew<vtkCallbackCommand> splineCallback;
+    splineCallback->SetClientData(_panoramicView);
+    splineCallback->SetCallback(SplinePanoramicUpdateCallback);
+    splineWidget->AddObserver(vtkCommand::EndInteractionEvent, splineCallback);
+}
+
+
+
 void SliceOrientationXY::CreateSpline()
 {
-    int Z = _reslicer->GetSliceMax();;// _reslicer->GetSliceMax();
+    int Z = _reslicer->GetSliceMax()/2;;// _reslicer->GetSliceMax();
 
     std::vector<PointSpline> vecPointsForSpline;
     vecPointsForSpline.emplace_back(PointSpline{ 129, 385, Z });

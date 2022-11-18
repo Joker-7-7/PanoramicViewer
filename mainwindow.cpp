@@ -119,7 +119,7 @@ void MainWindow::openFile(const QString& item)
 void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
 {
     ui->openGLSceneWidget->addDataSet(dataSet);
-    ui->openGLSliceXYWidget->addDataSet(dataSet);
+    ui->openGLSliceXYWidget->addDataSet(dataSet, ui->openGLSceneWidget);
 
    ui->verticalSlider->setMaximum(ui->openGLSliceXYWidget->_reslicer->GetSliceMax());
    ui->verticalSlider->setValue(ui->openGLSliceXYWidget->_reslicer->GetSliceMax() / 2);
