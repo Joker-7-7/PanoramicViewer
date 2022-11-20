@@ -77,24 +77,24 @@ void SliceOrientationXY::CreateSpline()
 
     std::vector<PointSpline> vecPointsForSpline;
     vecPointsForSpline.emplace_back(PointSpline{ 129, 385, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 148, 323, Z });
+   // vecPointsForSpline.emplace_back(PointSpline{ 148, 323, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 157, 290, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 165, 250, Z });
+   // vecPointsForSpline.emplace_back(PointSpline{ 165, 250, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 167, 204, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 177, 162, Z });
+   // vecPointsForSpline.emplace_back(PointSpline{ 177, 162, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 187, 130, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 200, 93, Z });
+    //vecPointsForSpline.emplace_back(PointSpline{ 200, 93, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 227, 65, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 263, 56, Z });
+    //vecPointsForSpline.emplace_back(PointSpline{ 263, 56, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 286, 54, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 316, 58, Z });
+    //vecPointsForSpline.emplace_back(PointSpline{ 316, 58, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 347, 79, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 367, 130, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 377, 165, Z });
+    //vecPointsForSpline.emplace_back(PointSpline{ 377, 165, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 384, 203, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 394, 249, Z });
+  //  vecPointsForSpline.emplace_back(PointSpline{ 394, 249, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 409, 310, Z });
-    vecPointsForSpline.emplace_back(PointSpline{ 420, 344, Z });
+  //  vecPointsForSpline.emplace_back(PointSpline{ 420, 344, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 443, 385, Z });
 
     vtkImageData* imageCurrentData_ = _reader->GetOutput();
