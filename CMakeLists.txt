@@ -51,9 +51,10 @@ find_package(VTK 9.1 COMPONENTS REQUIRED
 
 file (GLOB_RECURSE Sources Src/*.c*)
 file (GLOB         QtResources *.qrc)
+file (GLOB         Ui Src/*.ui)
 
 # Build executable
-add_executable(${PROJECT_NAME} WIN32 ${Sources}  ${QtResources})
+add_executable(${PROJECT_NAME} WIN32 ${Sources}  ${QtResources} ${Ui})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets
         PRIVATE Qt6::OpenGL

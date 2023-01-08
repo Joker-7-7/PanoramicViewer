@@ -33,35 +33,35 @@
     <item row="0" column="0">
      <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>PushButton</string>
+       <string>Rentgen</string>
       </property>
      </widget>
     </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="pushButton_2">
       <property name="text">
-       <string>PushButton</string>
+       <string>Solid</string>
       </property>
      </widget>
     </item>
     <item row="0" column="4">
      <widget class="QPushButton" name="pushButton_5">
       <property name="text">
-       <string>PushButton</string>
+       <string>Spline On/Off</string>
       </property>
      </widget>
     </item>
     <item row="0" column="2">
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
-       <string>PushButton</string>
+       <string>Max Intensity</string>
       </property>
      </widget>
     </item>
     <item row="0" column="3">
      <widget class="QPushButton" name="pushButton_4">
       <property name="text">
-       <string>PushButton</string>
+       <string>Min Intensity</string>
       </property>
      </widget>
     </item>
@@ -126,7 +126,7 @@
   </widget>
   <action name="actionOpenFile">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/doc/openFile.png</normaloff>:/doc/openFile.png</iconset>
    </property>
    <property name="text">
@@ -141,7 +141,7 @@
   </action>
   <action name="actionZoomToExtent">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/doc/zoom.png</normaloff>:/doc/zoom.png</iconset>
    </property>
    <property name="text">
@@ -189,7 +189,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections>
   <connection>
