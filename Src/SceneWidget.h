@@ -27,16 +27,15 @@
 #include <vtkImageData.h>
 #include <vtkParametricSpline.h>
 
-struct Point
-{
-    int x;
-    int y;
-    int z;
-};
-
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 public:
+    struct Point
+    {
+        int x;
+        int y;
+        int z;
+    };
 
     // window refresh rate when rotating the model
     const double _desiredUpdateRate;

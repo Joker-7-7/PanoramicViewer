@@ -2,6 +2,18 @@
 #include <QCoreApplication.h>
 #include <vtkCallbackCommand.h>
 
+namespace
+{
+    void SplinePanoramicUpdateCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
+                                       void* clientData, void* vtkNotUsed(callData))
+    {
+        vtkSplineWidget* splineWidget = static_cast<vtkSplineWidget*>(caller);
+        SceneWidget* panoramicView = static_cast<SceneWidget*>(clientData);
+
+        panoramicView->generatePanoramicView(splineWidget->GetParametricSpline());
+    }
+}
+
 SliceOrientationXY::SliceOrientationXY(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent), _backgroundColor{ 0.0, 0.0, 0. }, _visibilitySpline(SplineVisibility::VisibilityOn)
 {
@@ -65,7 +77,7 @@ void SliceOrientationXY::CreateSplineModifiCallback()
     splineWidget->RemoveAllObservers();
     vtkNew<vtkCallbackCommand> splineCallback;
     splineCallback->SetClientData(_panoramicView);
-    splineCallback->SetCallback(SplinePanoramicUpdateCallback);
+    splineCallback->SetCallback(::SplinePanoramicUpdateCallback);
     splineWidget->AddObserver(vtkCommand::EndInteractionEvent, splineCallback);
 }
 

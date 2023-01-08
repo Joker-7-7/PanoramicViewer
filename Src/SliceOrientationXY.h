@@ -17,36 +17,23 @@
 
 #include "SceneWidget.h"
 
-namespace
-{
-    void SplinePanoramicUpdateCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
-        void* clientData, void* vtkNotUsed(callData))
-    {
-        vtkSplineWidget* splineWidget = static_cast<vtkSplineWidget*>(caller);
-        SceneWidget* panoramicView = static_cast<SceneWidget*>(clientData);
-
-        panoramicView->generatePanoramicView(splineWidget->GetParametricSpline());
-    }
-}
-
-
-struct PointSpline
-{
-    int x;
-    int y;
-    int z;
-};
-
-enum class SplineVisibility
-{
-    VisibilityOn = 0,
-    VisibilityOff = 1
-};
-
 class SliceOrientationXY : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 
 public:
+    struct PointSpline
+    {
+        int x;
+        int y;
+        int z;
+    };
+
+    enum class SplineVisibility : bool
+    {
+        VisibilityOn,
+        VisibilityOff
+    };
+
     // window background color
     const double _backgroundColor[3];
     // a renderer is an object that controls the rendering process for slice
