@@ -1,4 +1,4 @@
-#include "sliceorientationXY.h"
+#include "SliceOrientationXY.h"
 #include <QCoreApplication.h>
 #include <vtkCallbackCommand.h>
 

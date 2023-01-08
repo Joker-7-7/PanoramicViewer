@@ -15,7 +15,7 @@
 #include <vtkProperty.h>
 #include <vtkImageData.h>
 
-#include "scenewidget.h"
+#include "SceneWidget.h"
 
 namespace
 {

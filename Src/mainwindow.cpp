@@ -6,8 +6,6 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
-
-
 namespace
 {
 

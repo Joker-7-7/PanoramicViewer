@@ -1,24 +1,15 @@
-#include "scenewidget.h"
+#include "SceneWidget.h"
+
+#include <Src/ThirdParty/vtkSplineDrivenImageSlicer.h>
 
 #include <vtkCamera.h>
-#include <vtkDataSetMapper.h>
-#include <vtkGenericOpenGLRenderWindow.h>
-#include <vtkProperty.h>
 #include <vtkRenderWindowInteractor.h>
-#include <vtkSplineDrivenImageSlicer.h>
 #include <vtkImageAppend.h>
 #include <vtkInteractorStyleRubberBandZoom.h>
-
-#include <vtkImageEllipsoidSource.h>
 #include <vtkImageData.h>
-#include <vtkLineSource.h>
 #include <vtkParametricSpline.h>
 #include <vtkParametricFunctionSource.h>
 #include <vtkDICOMReader.h>
-#include <vtkGlobFileNames.h>
-#include <vtkDICOMFileSorter.h>
-#include <vtkCamera.h>
-#include <vtkCommand.h>
 
 SceneWidget::SceneWidget(QWidget* parent)
     : QVTKOpenGLNativeWidget(parent), _desiredUpdateRate(30.0), _backgroundColor{ 0, 0, 0 }
