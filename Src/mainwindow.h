@@ -8,7 +8,6 @@
 #include <vtkImageReader2.h>
 #include <vtkDICOMReader.h>
 
-
 namespace Ui {
 class MainWindow;
 }
@@ -52,4 +51,4 @@ private:
     Ui::MainWindow* ui;
 };
 
-#endif // MAINWINDOW_H
+#endif

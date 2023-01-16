@@ -74,6 +74,4 @@ public:
 
 };
 
-
-
-#endif // SLICEORIENTATIONXY_H
+#endif

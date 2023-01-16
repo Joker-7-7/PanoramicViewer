@@ -41,12 +41,10 @@ SceneWidget::SceneWidget(QWidget* parent)
     vecPointsForSpline.emplace_back(Point{ 443, 385, Z });
 }
 
-
 void SceneWidget::createSpline()
 {
 
 }
-
 
 void SceneWidget::generatePanoramicView(vtkParametricSpline* spline)
 {

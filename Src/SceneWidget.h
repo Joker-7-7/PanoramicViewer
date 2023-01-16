@@ -92,8 +92,6 @@ public:
 public slots:
     //! Zoom to the extent of the data set in the scene
     void zoomToExtent();
-
-
 };
 
 #endif // SCENEWIDGET_H

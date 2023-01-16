@@ -8,7 +8,6 @@
 
 namespace
 {
-
     void ShowErrorMassage()
     {
         QMessageBox msgBox;
@@ -113,7 +112,6 @@ void MainWindow::openFile(const QString& item)
         }
 }
 
-
 void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
 {
     ui->openGLSceneWidget->addDataSet(dataSet);
@@ -129,13 +127,11 @@ void MainWindow::on_pushButton_clicked()
     ui->openGLSceneWidget->renderWindow()->Render();
 }
 
-
 void MainWindow::on_pushButton_2_clicked()
 {
     ui->openGLSceneWidget->setSolidEffects();
     ui->openGLSceneWidget->renderWindow()->Render();
 }
-
 
 void MainWindow::on_pushButton_3_clicked()
 {
@@ -143,13 +139,11 @@ void MainWindow::on_pushButton_3_clicked()
     ui->openGLSceneWidget->renderWindow()->Render();
 }
 
-
 void MainWindow::on_pushButton_4_clicked()
 {
     ui->openGLSceneWidget->setMinIntensity();
     ui->openGLSceneWidget->renderWindow()->Render();
 }
-
 
 void MainWindow::on_verticalSlider_sliderMoved(int position)
 {
@@ -160,10 +154,8 @@ void MainWindow::on_verticalSlider_sliderMoved(int position)
     }
 }
 
-
 void MainWindow::on_pushButton_5_clicked()
 {
      ui->openGLSliceXYWidget->setSplineWidget();
     
 }
-
