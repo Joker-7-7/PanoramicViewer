@@ -21,6 +21,9 @@ class SliceOrientationXY : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 
 public:
+    /**
+     * 3D point for spline
+     */
     struct PointSpline
     {
         int x;
@@ -28,50 +31,101 @@ public:
         int z;
     };
 
+    /**
+     * Spline visibility
+     */
     enum class SplineVisibility : bool
     {
         VisibilityOn,
         VisibilityOff
     };
 
-    // window background color
+    /**
+     * window background color
+     */
     const double _backgroundColor[3];
-    // a renderer is an object that controls the rendering process for slice
+
+    /**
+     * A renderer is an object that controls the rendering process for slice
+     */
     vtkNew<vtkRenderer> _renderer;
+
+    /**
+     * Spline along which a panoramic reconstruction is built
+     */
     vtkNew<vtkSplineWidget> splineWidget;
+
+    /**
+     * Slicer for moving between DICOM layers
+     */
     vtkNew<vtkResliceImageViewer> _reslicer;
-    // create a window for renderers to draw slice XY into 
+
+    /**
+     * Create a window for renderers to draw slice XY into
+     */
     vtkNew<vtkGenericOpenGLRenderWindow> _renderWindow;
-    // reader for DICOM 
+
+    /**
+     * Reader for DICOM
+     */
     vtkSmartPointer<vtkImageReader2> _reader;
 
+    /**
+     * Spline visibility
+     */
     SplineVisibility _visibilitySpline;
+
+    /**
+     * Render window interaction for slicer
+     */
     vtkNew<vtkRenderWindowInteractor> _renderWindowInteractor;
+
+    /**
+     * Render window interaction for spline
+     */
     vtkNew<vtkRenderWindowInteractor> _renderInteractorForSpline;
 
+    /**
+     * Panoramic reconstruction
+     */
     SceneWidget* _panoramicView;
 public:
     explicit SliceOrientationXY(QWidget* parent = nullptr);
 
-    /// <summary>
-    /// Add a data set to the scene
-    /// </summary>
-    /// <param name="param[in] dataSet The data set to add"></param>
+    /**
+     * Add a data set to the scene
+     *
+     * @param dataSet data
+     * @param panoramicView panoramic reconstruction
+     */
     void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView);
 
-    /// <summary>
-    /// Remove the data set from the scene
-    /// </summary>
+    /**
+     * Remove the data set from the scene
+     */
     void removeDataSet();
 
-    /// <summary>
-    /// Setup m_ptrRenderer, m_ptrRenderWindow, m_ptrIinteractor
-    /// </summary>
+    /**
+     * Setup render scene
+     */
     void setupRender();
-    void setSplineWidget();
-    void CreateSpline();
-    void CreateSplineModifiCallback();
 
+    /**
+     * Change spline visibility
+     */
+    void setSplineWidget();
+
+    /**
+     * Build spline on DICOM layer
+     */
+    void CreateSpline();
+
+    /**
+     * Rebuilding the spline after changing the position of the vertex
+     *
+     * @note the method for callback
+     */
+    void CreateSplineModifiCallback();
 };
 
 #endif
