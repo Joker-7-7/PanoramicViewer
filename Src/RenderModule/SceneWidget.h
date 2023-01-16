@@ -94,4 +94,4 @@ public slots:
     void zoomToExtent();
 };
 
-#endif // SCENEWIDGET_H
+#endif

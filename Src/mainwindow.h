@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
 #include <vtkDataSetReader.h>
 #include <vtkGlobFileNames.h>
 #include <vtkDICOMFileSorter.h>

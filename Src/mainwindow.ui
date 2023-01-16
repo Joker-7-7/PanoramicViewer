@@ -127,7 +127,7 @@
   <action name="actionOpenFile">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/doc/openFile.png</normaloff>:/doc/openFile.png</iconset>
+     <normaloff>:/Assets/openFile.png</normaloff>:/Assets/openFile.png</iconset>
    </property>
    <property name="text">
     <string>Open file...</string>
@@ -142,7 +142,7 @@
   <action name="actionZoomToExtent">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/doc/zoom.png</normaloff>:/doc/zoom.png</iconset>
+     <normaloff>:/Assets/zoom.png</normaloff>:/Assets/zoom.png</iconset>
    </property>
    <property name="text">
     <string>Zoom to extent</string>
@@ -177,7 +177,7 @@
   <customwidget>
    <class>SceneWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header>scenewidget.h</header>
+   <header location="global">Src\RenderModule/SceneWidget.h</header>
    <slots>
     <slot>zoomToExtent()</slot>
    </slots>
@@ -185,7 +185,7 @@
   <customwidget>
    <class>SliceOrientationXY</class>
    <extends>QOpenGLWidget</extends>
-   <header>sliceorientationXY.h</header>
+   <header location="global">Src/RenderModule/SliceOrientationXY.h</header>
   </customwidget>
  </customwidgets>
  <resources>

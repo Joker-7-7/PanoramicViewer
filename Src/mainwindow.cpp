@@ -157,5 +157,4 @@ void MainWindow::on_verticalSlider_sliderMoved(int position)
 void MainWindow::on_pushButton_5_clicked()
 {
      ui->openGLSliceXYWidget->setSplineWidget();
-    
 }

@@ -1,6 +1,6 @@
 <RCC>
-    <qresource prefix="/">
-        <file>doc/zoom.png</file>
-        <file>doc/openFile.png</file>
+    <qresource prefix="/Assets">
+        <file alias="openFile.png">Assets/openFile.png</file>
+        <file alias="zoom.png">Assets/zoom.png</file>
     </qresource>
 </RCC>

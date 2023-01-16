@@ -1,6 +1,5 @@
 #include "SceneWidget.h"
-
-#include <Src/ThirdParty/vtkSplineDrivenImageSlicer.h>
+#include "Src/ThirdParty/vtkSplineDrivenImageSlicer.h"
 
 #include <vtkCamera.h>
 #include <vtkRenderWindowInteractor.h>
@@ -326,6 +325,4 @@ void SceneWidget::setupReader(vtkSmartPointer<vtkImageReader2> reader)
 {
     // save reader in first buffer
     _reader = reader;
-    // create new reader for second buffer
-
 }
