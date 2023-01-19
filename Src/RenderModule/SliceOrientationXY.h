@@ -17,6 +17,17 @@
 
 #include "SceneWidget.h"
 
+/**
+ * Cut plane XY
+ *
+ * <p>
+ * Used to move between DICOM layers
+ * and draw a spline along which a panorama reconstruction is built
+ * <p>
+ *
+ * @author Ggevorgyan
+ * @since  0.1.0
+ */
 class SliceOrientationXY : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 

@@ -22,8 +22,6 @@ SliceOrientationXY::SliceOrientationXY(QWidget* parent)
     setupRender();
 }
 
-
-
 void SliceOrientationXY::removeDataSet()
 {
     vtkProp* actor = _renderer->GetActors()->GetLastProp();
@@ -72,7 +70,6 @@ void SliceOrientationXY::setupRender()
     renderWindow()->AddRenderer(_renderer);
 }
 
-
 void SliceOrientationXY::CreateSplineModifiCallback()
 {
     splineWidget->RemoveAllObservers();
@@ -81,8 +78,6 @@ void SliceOrientationXY::CreateSplineModifiCallback()
     splineCallback->SetCallback(::SplinePanoramicUpdateCallback);
     splineWidget->AddObserver(vtkCommand::EndInteractionEvent, splineCallback);
 }
-
-
 
 void SliceOrientationXY::CreateSpline()
 {
@@ -130,7 +125,6 @@ void SliceOrientationXY::CreateSpline()
     _renderer->ResetCamera();
     renderWindow()->Render();
 }
-
 
 void SliceOrientationXY::setSplineWidget()
 {

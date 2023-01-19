@@ -10,8 +10,10 @@
 #include <vtkParametricFunctionSource.h>
 #include <vtkDICOMReader.h>
 
-SceneWidget::SceneWidget(QWidget* parent)
-    : QVTKOpenGLNativeWidget(parent), _desiredUpdateRate(30.0), _backgroundColor{ 0, 0, 0 }
+SceneWidget::SceneWidget(QWidget* parent) :
+    QVTKOpenGLNativeWidget(parent),
+    _desiredUpdateRate(30.0),
+    _backgroundColor{ 0, 0, 0 }
 {
     setRenderWindow(_renderWindow.Get());
     setupRender();
