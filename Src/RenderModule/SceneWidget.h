@@ -1,11 +1,13 @@
 #ifndef SCENEWIDGET_H
 #define SCENEWIDGET_H
 
+#include "Src/GraphicPrimitives/Point3D.hpp"
+
 #include <QVTKOpenGLNativeWidget.h>
+
 #include <vtkDataSet.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
-
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkDICOMImageReader.h>
 #include <vtkDICOMReader.h>
@@ -30,13 +32,6 @@
 class SceneWidget : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 public:
-    struct Point
-    {
-        int x;
-        int y;
-        int z;
-    };
-
     // window refresh rate when rotating the model
     const double _desiredUpdateRate;
     // window background color
@@ -52,7 +47,7 @@ public:
     // reader for first buffer
     vtkSmartPointer<vtkImageReader2> _reader;
 
-    std::vector<Point> vecPointsForSpline;
+    std::vector<GraphicPrimitives::Point3D> vecPointsForSpline;
     explicit SceneWidget(QWidget* parent = nullptr);
 
     /// <summary>
@@ -90,7 +85,9 @@ public:
 
     void setSolidEffects();
 public slots:
-    //! Zoom to the extent of the data set in the scene
+    /**
+     * Zoom to the extent of the data set in the scene
+     */
     void zoomToExtent();
 };
 

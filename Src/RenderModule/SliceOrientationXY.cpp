@@ -8,15 +8,17 @@ namespace
     void SplinePanoramicUpdateCallback(vtkObject* caller, long unsigned int vtkNotUsed(eventId),
                                        void* clientData, void* vtkNotUsed(callData))
     {
-        vtkSplineWidget* splineWidget = static_cast<vtkSplineWidget*>(caller);
-        SceneWidget* panoramicView = static_cast<SceneWidget*>(clientData);
+        auto* splineWidget = dynamic_cast<vtkSplineWidget*>(caller);
+        auto* panoramicView = static_cast<SceneWidget*>(clientData);
 
         panoramicView->generatePanoramicView(splineWidget->GetParametricSpline());
     }
 }
 
-SliceOrientationXY::SliceOrientationXY(QWidget* parent)
-    : QVTKOpenGLNativeWidget(parent), _backgroundColor{ 0.0, 0.0, 0. }, _visibilitySpline(SplineVisibility::VisibilityOn)
+SliceOrientationXY::SliceOrientationXY(QWidget* parent) :
+    QVTKOpenGLNativeWidget(parent),
+    _backgroundColor{ 0.0, 0.0, 0.0 },
+    _visibilitySpline(SplineVisibility::VisibilityOn)
 {
     setRenderWindow(_renderWindow.Get());
     setupRender();
@@ -29,7 +31,6 @@ void SliceOrientationXY::removeDataSet()
         _renderer->RemoveVolume(actor);
     }
 }
-
 
 void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader, SceneWidget* panoramicView)
 {
