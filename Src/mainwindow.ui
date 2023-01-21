@@ -78,7 +78,7 @@
        <widget class="SliceOrientationXY" name="openGLSliceXYWidget"/>
       </item>
       <item>
-       <widget class="SceneWidget" name="openGLSceneWidget"/>
+       <widget class="PanoramicView" name="openGLPanoramicWidget"/>
       </item>
      </layout>
     </item>
@@ -175,9 +175,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SceneWidget</class>
+   <class>PanoramicView</class>
    <extends>QOpenGLWidget</extends>
-   <header location="global">Src\RenderModule/SceneWidget.h</header>
+   <header location="global">Src\RenderModule/PanoramicView.h</header>
    <slots>
     <slot>ZoomToExtent()</slot>
    </slots>

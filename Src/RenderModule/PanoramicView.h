@@ -29,7 +29,7 @@
 #include <vtkImageData.h>
 #include <vtkParametricSpline.h>
 
-class SceneWidget : public QVTKOpenGLNativeWidget {
+class PanoramicView : public QVTKOpenGLNativeWidget {
     Q_OBJECT
 public:
     // window refresh rate when rotating the model
@@ -48,7 +48,7 @@ public:
     vtkSmartPointer<vtkImageReader2> _reader;
 
     std::vector<GraphicPrimitives::Point3D> vecPointsForSpline;
-    explicit SceneWidget(QWidget* parent = nullptr);
+    explicit PanoramicView(QWidget* parent = nullptr);
 
     /// <summary>
     /// Add a data set to the scene

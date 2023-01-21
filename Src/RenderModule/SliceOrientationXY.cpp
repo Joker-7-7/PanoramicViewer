@@ -9,7 +9,7 @@ namespace
                                        void* clientData, void* vtkNotUsed(callData))
     {
         auto* splineWidget = dynamic_cast<vtkSplineWidget*>(caller);
-        auto* panoramicView = static_cast<SceneWidget*>(clientData);
+        auto* panoramicView = static_cast<PanoramicView*>(clientData);
 
         panoramicView->GeneratePanoramicView(splineWidget->GetParametricSpline());
     }
@@ -32,7 +32,7 @@ void SliceOrientationXY::RemoveDataSet()
     }
 }
 
-void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView)
+void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, PanoramicView* panoramicView)
 {
     _panoramicView = panoramicView;
     RemoveDataSet();
