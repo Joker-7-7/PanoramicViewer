@@ -18,37 +18,34 @@ SceneWidget::SceneWidget(QWidget* parent) :
     setRenderWindow(_renderWindow.Get());
     setupRender();
     setupProperty();
-
-    int Z = 225;
-    vecPointsForSpline.emplace_back(Point{ 129, 385, Z });
-    vecPointsForSpline.emplace_back(Point{ 148, 323, Z });
-    vecPointsForSpline.emplace_back(Point{ 157, 290, Z });
-    vecPointsForSpline.emplace_back(Point{ 165, 250, Z });
-    vecPointsForSpline.emplace_back(Point{ 167, 204, Z });
-    vecPointsForSpline.emplace_back(Point{ 177, 162, Z });
-    vecPointsForSpline.emplace_back(Point{ 187, 130, Z });
-    vecPointsForSpline.emplace_back(Point{ 200, 93, Z });
-    vecPointsForSpline.emplace_back(Point{ 227, 65, Z });
-    vecPointsForSpline.emplace_back(Point{ 263, 56, Z });
-    vecPointsForSpline.emplace_back(Point{ 286, 54, Z });
-    vecPointsForSpline.emplace_back(Point{ 316, 58, Z });
-    vecPointsForSpline.emplace_back(Point{ 347, 79, Z });
-    vecPointsForSpline.emplace_back(Point{ 367, 130, Z });
-    vecPointsForSpline.emplace_back(Point{ 377, 165, Z });
-    vecPointsForSpline.emplace_back(Point{ 384, 203, Z });
-    vecPointsForSpline.emplace_back(Point{ 394, 249, Z });
-    vecPointsForSpline.emplace_back(Point{ 409, 310, Z });
-    vecPointsForSpline.emplace_back(Point{ 420, 344, Z });
-    vecPointsForSpline.emplace_back(Point{ 443, 385, Z });
+    createSpline();
 }
 
-void SceneWidget::createSpline()
-{
-
+void SceneWidget::createSpline() {
+    constexpr double Z = 225;
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 129, 385, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 148, 323, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 157, 290, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 165, 250, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 167, 204, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 177, 162, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 187, 130, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 200, 93, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 227, 65, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 263, 56, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 286, 54, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 316, 58, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 347, 79, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 367, 130, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 377, 165, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 384, 203, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 394, 249, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 409, 310, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 420, 344, Z });
+    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 443, 385, Z });
 }
 
-void SceneWidget::generatePanoramicView(vtkParametricSpline* spline)
-{
+void SceneWidget::generatePanoramicView(vtkParametricSpline* spline) {
     //vtkImageData* imageCurrentData_ = _reader->GetOutput();
     //vtkNew<vtkPoints> points;
     //for (int i = 0; i < vecPointsForSpline.size(); ++i)
@@ -100,13 +97,10 @@ void SceneWidget::generatePanoramicView(vtkParametricSpline* spline)
     append->SetAppendAxis(2);
     append->Update();
 
-
-
     //vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
     //mapper->SetInputConnection(append->GetOutputPort());
     //mapper->SetMaximumImageSampleDistance(1.0);
     //mapper->UseJitteringOn();
-
 
     _volume->GetMapper()->SetInputConnection(append->GetOutputPort());
 
@@ -115,8 +109,7 @@ void SceneWidget::generatePanoramicView(vtkParametricSpline* spline)
 
     renderWindow()->Render();
 }
-void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
-{
+void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader) {
     removeDataSet();
 
     setupReader(reader);
@@ -129,27 +122,24 @@ void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader)
     mapper->SetMaximumImageSampleDistance(1.0);
     mapper->UseJitteringOn();
 
-
     _volume->SetMapper(mapper);
 
    // renderWindow()->Render();
 }
 
-void SceneWidget::removeDataSet()
-{
+void SceneWidget::removeDataSet() {
     vtkProp* volume = _renderer->GetVolumes()->GetLastProp();
     if (volume != nullptr) {
         _renderer->RemoveVolume(volume);
     }
 }
 
-void SceneWidget::zoomToExtent()
-{
+void SceneWidget::zoomToExtent() {
     _renderer->ResetCamera();
     renderWindow()->Render();
 }
-void SceneWidget::setupRender()
-{
+
+void SceneWidget::setupRender() {
     // Setup rendering stuff
     _renderer->SetBackground(_backgroundColor);
 
@@ -171,8 +161,7 @@ void SceneWidget::setupRender()
     _renderer->GetActiveCamera()->Azimuth(90);
 }
 
-void SceneWidget::setupProperty()
-{
+void SceneWidget::setupProperty() {
     double wl_ = 1830.0;
     double ww_ = 140.0;
     // Setup Volume property
@@ -199,8 +188,7 @@ void SceneWidget::setupProperty()
     _volume->SetProperty(_volumeProperty);
 }
 
-void SceneWidget::setRentgenEffects()
-{
+void SceneWidget::setRentgenEffects() {
     vtkVolumeProperty* volumeProperty_ = _volume->GetProperty();
 
     vtkColorTransferFunction* colFun = volumeProperty_->GetRGBTransferFunction();
@@ -229,8 +217,7 @@ void SceneWidget::setRentgenEffects()
     volumeProperty_->SetSpecular(0.5);
 }
 
-void SceneWidget::setSolidEffects()
-{
+void SceneWidget::setSolidEffects() {
     double wl_ = 2100;
     double ww_ = 1000;
 
@@ -261,9 +248,7 @@ void SceneWidget::setSolidEffects()
     volumeProperty_->SetSpecular(0.5);
 }
 
-void SceneWidget::setMaxIntensity()
-{
-
+void SceneWidget::setMaxIntensity() {
 
     vtkVolumeProperty* volumeProperty_ = _volume->GetProperty();
 
@@ -293,9 +278,7 @@ void SceneWidget::setMaxIntensity()
     volumeProperty_->SetSpecularPower(1);
 }
 
-void SceneWidget::setMinIntensity()
-{
-
+void SceneWidget::setMinIntensity() {
 
     vtkVolumeProperty* volumeProperty_ = _volume->GetProperty();
 
@@ -323,8 +306,7 @@ void SceneWidget::setMinIntensity()
     volumeProperty_->SetSpecularPower(100);
 }
 
-void SceneWidget::setupReader(vtkSmartPointer<vtkImageReader2> reader)
-{
+void SceneWidget::setupReader(vtkSmartPointer<vtkImageReader2> reader) {
     // save reader in first buffer
     _reader = reader;
 }

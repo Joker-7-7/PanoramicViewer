@@ -52,7 +52,7 @@ public:
     };
 
     /**
-     * window background color
+     * Window background color
      */
     const double _backgroundColor[3];
 
@@ -106,7 +106,7 @@ public:
     /**
      * Add a data set to the scene
      *
-     * @param dataSet data
+     * @param dataSet       data
      * @param panoramicView panoramic reconstruction
      */
     void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView);
