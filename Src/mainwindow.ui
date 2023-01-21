@@ -179,7 +179,7 @@
    <extends>QOpenGLWidget</extends>
    <header location="global">Src\RenderModule/SceneWidget.h</header>
    <slots>
-    <slot>zoomToExtent()</slot>
+    <slot>ZoomToExtent()</slot>
    </slots>
   </customwidget>
   <customwidget>

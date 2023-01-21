@@ -54,41 +54,41 @@ public:
     /// Add a data set to the scene
     /// </summary>
     /// <param name="param[in] dataSet The data set to add"></param>
-    void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet);
+    void AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet);
     /// <summary>
     /// Setup readers parameters for m_ptrReader and m_ptrPreReader
     /// </summary>
     /// <param name="reader"></param>
-    void setupReader(vtkSmartPointer<vtkImageReader2> reader);
+    void SetupReader(vtkSmartPointer<vtkImageReader2> reader);
     /// <summary>
     /// Setup m_ptrRenderer, m_ptrRenderWindow, m_ptrIinteractor
     /// </summary>
-    void setupRender();
+    void SetupRender();
     /// <summary>
     /// Setup vtkGPUVolumeRayCastMapper, vtkColorTransferFunction, vtkPiecewiseFunction
     /// </summary>
-    void setupProperty();
+    void SetupProperty();
     /// <summary>
     /// Remove the data set from the scene
     /// </summary>
-    void removeDataSet();
+    void RemoveDataSet();
 
-    void generatePanoramicView(vtkParametricSpline* spline);
+    void GeneratePanoramicView(vtkParametricSpline* spline);
 
-    void createSpline();
+    void CreateSpline();
 
-    void setRentgenEffects();
+    void SetRentgenEffects();
 
-    void setMaxIntensity();
+    void SetMaxIntensity();
 
-    void setMinIntensity();
+    void SetMinIntensity();
 
-    void setSolidEffects();
+    void SetSolidEffects();
 public slots:
     /**
      * Zoom to the extent of the data set in the scene
      */
-    void zoomToExtent();
+    void ZoomToExtent();
 };
 
 #endif

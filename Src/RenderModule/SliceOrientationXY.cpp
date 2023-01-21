@@ -11,7 +11,7 @@ namespace
         auto* splineWidget = dynamic_cast<vtkSplineWidget*>(caller);
         auto* panoramicView = static_cast<SceneWidget*>(clientData);
 
-        panoramicView->generatePanoramicView(splineWidget->GetParametricSpline());
+        panoramicView->GeneratePanoramicView(splineWidget->GetParametricSpline());
     }
 }
 
@@ -21,10 +21,10 @@ SliceOrientationXY::SliceOrientationXY(QWidget* parent) :
     _visibilitySpline(SplineVisibility::VisibilityOn)
 {
     setRenderWindow(_renderWindow.Get());
-    setupRender();
+    SetupRender();
 }
 
-void SliceOrientationXY::removeDataSet()
+void SliceOrientationXY::RemoveDataSet()
 {
     vtkProp* actor = _renderer->GetActors()->GetLastProp();
     if (actor != nullptr) {
@@ -32,11 +32,11 @@ void SliceOrientationXY::removeDataSet()
     }
 }
 
-void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader, SceneWidget* panoramicView)
+void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView)
 {
     _panoramicView = panoramicView;
-    removeDataSet();
-    _reader = reader;
+    RemoveDataSet();
+    _reader = dataSet;
 
     _reslicer->SetupInteractor(_renderWindowInteractor);
     _reslicer->SetRenderWindow(_renderWindow);
@@ -58,7 +58,7 @@ void SliceOrientationXY::addDataSet(vtkSmartPointer<vtkImageReader2> reader, Sce
     renderWindow()->Render();
 }
 
-void SliceOrientationXY::setupRender()
+void SliceOrientationXY::SetupRender()
 {
     // Setup rendering stuff
     _renderer->SetBackground(_backgroundColor);
@@ -127,7 +127,7 @@ void SliceOrientationXY::CreateSpline()
     renderWindow()->Render();
 }
 
-void SliceOrientationXY::setSplineWidget()
+void SliceOrientationXY::SetSplineWidget()
 {
     if (_visibilitySpline == SplineVisibility::VisibilityOff)
     {

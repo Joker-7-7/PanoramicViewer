@@ -109,22 +109,22 @@ public:
      * @param dataSet       data
      * @param panoramicView panoramic reconstruction
      */
-    void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView);
+    void AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView);
 
     /**
      * Remove the data set from the scene
      */
-    void removeDataSet();
+    void RemoveDataSet();
 
     /**
      * Setup render scene
      */
-    void setupRender();
+    void SetupRender();
 
     /**
      * Change spline visibility
      */
-    void setSplineWidget();
+    void SetSplineWidget();
 
     /**
      * Build spline on DICOM layer

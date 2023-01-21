@@ -114,8 +114,8 @@ void MainWindow::openFile(const QString& item)
 
 void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
 {
-    ui->openGLSceneWidget->addDataSet(dataSet);
-    ui->openGLSliceXYWidget->addDataSet(dataSet, ui->openGLSceneWidget);
+    ui->openGLSceneWidget->AddDataSet(dataSet);
+    ui->openGLSliceXYWidget->AddDataSet(dataSet, ui->openGLSceneWidget);
 
    ui->verticalSlider->setMaximum(ui->openGLSliceXYWidget->_reslicer->GetSliceMax());
    ui->verticalSlider->setValue(ui->openGLSliceXYWidget->_reslicer->GetSliceMax() / 2);
@@ -123,25 +123,25 @@ void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
 
 void MainWindow::on_pushButton_clicked()
 {
-    ui->openGLSceneWidget->setRentgenEffects();
+    ui->openGLSceneWidget->SetRentgenEffects();
     ui->openGLSceneWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    ui->openGLSceneWidget->setSolidEffects();
+    ui->openGLSceneWidget->SetSolidEffects();
     ui->openGLSceneWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    ui->openGLSceneWidget->setMaxIntensity();
+    ui->openGLSceneWidget->SetMaxIntensity();
     ui->openGLSceneWidget->renderWindow()->Render();
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    ui->openGLSceneWidget->setMinIntensity();
+    ui->openGLSceneWidget->SetMinIntensity();
     ui->openGLSceneWidget->renderWindow()->Render();
 }
 
@@ -156,5 +156,5 @@ void MainWindow::on_verticalSlider_sliderMoved(int position)
 
 void MainWindow::on_pushButton_5_clicked()
 {
-     ui->openGLSliceXYWidget->setSplineWidget();
+    ui->openGLSliceXYWidget->SetSplineWidget();
 }
