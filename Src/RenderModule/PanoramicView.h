@@ -41,41 +41,12 @@
  */
 class PanoramicView : public QVTKOpenGLNativeWidget {
     Q_OBJECT
+
 public:
     /**
-    * Window refresh rate when rotating the model
-    */
-    const double _desiredUpdateRate;
-
-    /**
-     * Window background color
+     * Represents the common properties for rendering a _volume
      */
-    const double _backgroundColor[3];
-
-    /**
-     * A renderer is an object that controls the rendering process for objects
-     */
-    vtkNew<vtkRenderer> _renderer;
-
-    /**
-     * Create a window for renderers to draw into
-     */
-    vtkNew<vtkGenericOpenGLRenderWindow> _renderWindow;
-
-    /**
-     * Represents a volume (data & properties) in a rendered scene
-     */
-    vtkNew<vtkVolume> _volume;
-
-    /**
-     * Represents the common properties for rendering a volume
-     */
-    vtkNew<vtkVolumeProperty> _volumeProperty;
-
-    /**
-     * Reader for DICOM file
-     */
-    vtkSmartPointer<vtkImageReader2> _reader;
+    vtkNew<vtkVolumeProperty> volumeProperty;
 
     /**
      * Array for spline vertices
@@ -155,6 +126,37 @@ public slots:
      * Zoom to the extent of the data set in the scene
      */
     void ZoomToExtent();
+
+private:
+    /**
+    * Window refresh rate when rotating the model
+    */
+    const double _desiredUpdateRate;
+
+    /**
+     * Window background color
+     */
+    const double _backgroundColor[3];
+
+    /**
+     * A renderer is an object that controls the rendering process for objects
+     */
+    vtkNew<vtkRenderer> _renderer;
+
+    /**
+     * Reader for DICOM file
+     */
+    vtkSmartPointer<vtkImageReader2> _reader;
+
+    /**
+     * Create a window for renderers to draw into
+     */
+    vtkNew<vtkGenericOpenGLRenderWindow> _renderWindow;
+
+    /**
+     * Represents a _volume (data & properties) in a rendered scene
+     */
+    vtkNew<vtkVolume> _volume;
 };
 
 #endif

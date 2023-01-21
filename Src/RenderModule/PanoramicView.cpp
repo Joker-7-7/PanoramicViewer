@@ -176,16 +176,16 @@ void PanoramicView::SetupProperty() {
 
     m_ptrOpacityFunction->AddPoint(wl_ - ww_ / 2.0, 0.0);
     m_ptrOpacityFunction->AddPoint(wl_ + ww_ / 2.0, 1.0);
-    _volumeProperty->SetColor(m_ptrColorFunction);
-    _volumeProperty->SetScalarOpacity(m_ptrOpacityFunction);
-    _volumeProperty->SetInterpolationTypeToLinear();
-    _volumeProperty->ShadeOn();
-    _volumeProperty->SetAmbient(0.15);
-    _volumeProperty->SetDiffuse(0.8);
-    _volumeProperty->SetSpecular(0.25);
-    _volumeProperty->SetSpecularPower(40);
+    volumeProperty->SetColor(m_ptrColorFunction);
+    volumeProperty->SetScalarOpacity(m_ptrOpacityFunction);
+    volumeProperty->SetInterpolationTypeToLinear();
+    volumeProperty->ShadeOn();
+    volumeProperty->SetAmbient(0.15);
+    volumeProperty->SetDiffuse(0.8);
+    volumeProperty->SetSpecular(0.25);
+    volumeProperty->SetSpecularPower(40);
 
-    _volume->SetProperty(_volumeProperty);
+    _volume->SetProperty(volumeProperty);
 }
 
 void PanoramicView::SetRentgenEffects() {
