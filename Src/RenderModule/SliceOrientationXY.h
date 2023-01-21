@@ -15,7 +15,7 @@
 #include <vtkProperty.h>
 #include <vtkImageData.h>
 
-#include "SceneWidget.h"
+#include "PanoramicView.h"
 
 /**
  * Cut plane XY
@@ -99,7 +99,7 @@ public:
     /**
      * Panoramic reconstruction
      */
-    SceneWidget* _panoramicView;
+    PanoramicView* _panoramicView;
 public:
     explicit SliceOrientationXY(QWidget* parent = nullptr);
 
@@ -109,22 +109,22 @@ public:
      * @param dataSet       data
      * @param panoramicView panoramic reconstruction
      */
-    void addDataSet(vtkSmartPointer<vtkImageReader2> dataSet, SceneWidget* panoramicView);
+    void AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, PanoramicView* panoramicView);
 
     /**
      * Remove the data set from the scene
      */
-    void removeDataSet();
+    void RemoveDataSet();
 
     /**
      * Setup render scene
      */
-    void setupRender();
+    void SetupRender();
 
     /**
      * Change spline visibility
      */
-    void setSplineWidget();
+    void SetSplineWidget();
 
     /**
      * Build spline on DICOM layer

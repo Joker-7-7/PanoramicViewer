@@ -1,4 +1,4 @@
-#include "SceneWidget.h"
+#include "PanoramicView.h"
 #include "Src/ThirdParty/vtkSplineDrivenImageSlicer.h"
 
 #include <vtkCamera.h>
@@ -10,18 +10,18 @@
 #include <vtkParametricFunctionSource.h>
 #include <vtkDICOMReader.h>
 
-SceneWidget::SceneWidget(QWidget* parent) :
+PanoramicView::PanoramicView(QWidget* parent) :
     QVTKOpenGLNativeWidget(parent),
     _desiredUpdateRate(30.0),
     _backgroundColor{ 0, 0, 0 }
 {
     setRenderWindow(_renderWindow.Get());
-    setupRender();
-    setupProperty();
-    createSpline();
+    SetupRender();
+    SetupProperty();
+    CreateSpline();
 }
 
-void SceneWidget::createSpline() {
+void PanoramicView::CreateSpline() {
     constexpr double Z = 225;
     vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 129, 385, Z });
     vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 148, 323, Z });
@@ -45,7 +45,7 @@ void SceneWidget::createSpline() {
     vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 443, 385, Z });
 }
 
-void SceneWidget::generatePanoramicView(vtkParametricSpline* spline) {
+void PanoramicView::GeneratePanoramicView(vtkParametricSpline* spline) {
     //vtkImageData* imageCurrentData_ = _reader->GetOutput();
     //vtkNew<vtkPoints> points;
     //for (int i = 0; i < vecPointsForSpline.size(); ++i)
@@ -109,14 +109,14 @@ void SceneWidget::generatePanoramicView(vtkParametricSpline* spline) {
 
     renderWindow()->Render();
 }
-void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader) {
-    removeDataSet();
+void PanoramicView::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet) {
+    RemoveDataSet();
 
-    setupReader(reader);
+    SetupReader(dataSet);
 
-   // generatePanoramicView();
+   // GeneratePanoramicView();
 
-    setupProperty();
+    SetupProperty();
 
     vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
     mapper->SetMaximumImageSampleDistance(1.0);
@@ -127,19 +127,19 @@ void SceneWidget::addDataSet(vtkSmartPointer<vtkImageReader2> reader) {
    // renderWindow()->Render();
 }
 
-void SceneWidget::removeDataSet() {
+void PanoramicView::RemoveDataSet() {
     vtkProp* volume = _renderer->GetVolumes()->GetLastProp();
     if (volume != nullptr) {
         _renderer->RemoveVolume(volume);
     }
 }
 
-void SceneWidget::zoomToExtent() {
+void PanoramicView::ZoomToExtent() {
     _renderer->ResetCamera();
     renderWindow()->Render();
 }
 
-void SceneWidget::setupRender() {
+void PanoramicView::SetupRender() {
     // Setup rendering stuff
     _renderer->SetBackground(_backgroundColor);
 
@@ -161,7 +161,7 @@ void SceneWidget::setupRender() {
     _renderer->GetActiveCamera()->Azimuth(90);
 }
 
-void SceneWidget::setupProperty() {
+void PanoramicView::SetupProperty() {
     double wl_ = 1830.0;
     double ww_ = 140.0;
     // Setup Volume property
@@ -188,7 +188,7 @@ void SceneWidget::setupProperty() {
     _volume->SetProperty(_volumeProperty);
 }
 
-void SceneWidget::setRentgenEffects() {
+void PanoramicView::SetRentgenEffects() {
     vtkVolumeProperty* volumeProperty_ = _volume->GetProperty();
 
     vtkColorTransferFunction* colFun = volumeProperty_->GetRGBTransferFunction();
@@ -217,7 +217,7 @@ void SceneWidget::setRentgenEffects() {
     volumeProperty_->SetSpecular(0.5);
 }
 
-void SceneWidget::setSolidEffects() {
+void PanoramicView::SetSolidEffects() {
     double wl_ = 2100;
     double ww_ = 1000;
 
@@ -248,7 +248,7 @@ void SceneWidget::setSolidEffects() {
     volumeProperty_->SetSpecular(0.5);
 }
 
-void SceneWidget::setMaxIntensity() {
+void PanoramicView::SetMaxIntensity() {
 
     vtkVolumeProperty* volumeProperty_ = _volume->GetProperty();
 
@@ -278,7 +278,7 @@ void SceneWidget::setMaxIntensity() {
     volumeProperty_->SetSpecularPower(1);
 }
 
-void SceneWidget::setMinIntensity() {
+void PanoramicView::SetMinIntensity() {
 
     vtkVolumeProperty* volumeProperty_ = _volume->GetProperty();
 
@@ -306,7 +306,7 @@ void SceneWidget::setMinIntensity() {
     volumeProperty_->SetSpecularPower(100);
 }
 
-void SceneWidget::setupReader(vtkSmartPointer<vtkImageReader2> reader) {
+void PanoramicView::SetupReader(vtkSmartPointer<vtkImageReader2> reader) {
     // save reader in first buffer
     _reader = reader;
 }
