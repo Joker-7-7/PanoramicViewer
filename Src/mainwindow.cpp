@@ -117,8 +117,8 @@ void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
     ui->openGLPanoramicWidget->AddDataSet(dataSet);
     ui->openGLSliceXYWidget->AddDataSet(dataSet, ui->openGLPanoramicWidget);
 
-   ui->verticalSlider->setMaximum(ui->openGLSliceXYWidget->_reslicer->GetSliceMax());
-   ui->verticalSlider->setValue(ui->openGLSliceXYWidget->_reslicer->GetSliceMax() / 2);
+   ui->verticalSlider->setMaximum(ui->openGLSliceXYWidget->reslicer->GetSliceMax());
+   ui->verticalSlider->setValue(ui->openGLSliceXYWidget->reslicer->GetSliceMax() / 2);
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -147,9 +147,9 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_verticalSlider_sliderMoved(int position)
 {
-    if(ui->openGLSliceXYWidget->_reslicer != nullptr)
+    if(ui->openGLSliceXYWidget->reslicer != nullptr)
     {
-        ui->openGLSliceXYWidget->_reslicer->SetSlice(position);
+        ui->openGLSliceXYWidget->reslicer->SetSlice(position);
         ui->openGLSliceXYWidget->renderWindow()->Render();
     }
 }
