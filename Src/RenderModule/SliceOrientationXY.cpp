@@ -38,17 +38,17 @@ void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, Pa
     RemoveDataSet();
     _reader = dataSet;
 
-    _reslicer->SetupInteractor(_renderWindowInteractor);
-    _reslicer->SetRenderWindow(_renderWindow);
-    _reslicer->SliceScrollOnMouseWheelOff();
-    _reslicer->SetSliceOrientationToXY();
-    _reslicer->SetRenderer(_renderer);
-    _reslicer->SetInputData(_reader->GetOutput());
-    _reslicer->SetResliceModeToAxisAligned();
-    _reslicer->SetColorLevel(40.0);
-    _reslicer->SetSlice(_reslicer->GetSliceMax() / 2);
-    _reslicer->SetColorWindow(10000.0);
-    _reslicer->SetResliceMode(0);
+    reslicer->SetupInteractor(_renderWindowInteractor);
+    reslicer->SetRenderWindow(_renderWindow);
+    reslicer->SliceScrollOnMouseWheelOff();
+    reslicer->SetSliceOrientationToXY();
+    reslicer->SetRenderer(_renderer);
+    reslicer->SetInputData(_reader->GetOutput());
+    reslicer->SetResliceModeToAxisAligned();
+    reslicer->SetColorLevel(40.0);
+    reslicer->SetSlice(reslicer->GetSliceMax() / 2);
+    reslicer->SetColorWindow(10000.0);
+    reslicer->SetResliceMode(0);
 
 
     CreateSpline();
@@ -82,7 +82,7 @@ void SliceOrientationXY::CreateSplineModifiCallback()
 
 void SliceOrientationXY::CreateSpline()
 {
-    int Z = _reslicer->GetSliceMax()/2;;// _reslicer->GetSliceMax();
+    int Z = reslicer->GetSliceMax() / 2;;// reslicer->GetSliceMax();
 
     std::vector<PointSpline> vecPointsForSpline;
     vecPointsForSpline.emplace_back(PointSpline{ 129, 385, Z });

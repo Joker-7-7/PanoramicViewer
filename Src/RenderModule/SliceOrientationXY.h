@@ -52,16 +52,6 @@ public:
     };
 
     /**
-     * Window background color
-     */
-    const double _backgroundColor[3];
-
-    /**
-     * A renderer is an object that controls the rendering process for slice
-     */
-    vtkNew<vtkRenderer> _renderer;
-
-    /**
      * Spline along which a panoramic reconstruction is built
      */
     vtkNew<vtkSplineWidget> splineWidget;
@@ -69,37 +59,8 @@ public:
     /**
      * Slicer for moving between DICOM layers
      */
-    vtkNew<vtkResliceImageViewer> _reslicer;
+    vtkNew<vtkResliceImageViewer> reslicer;
 
-    /**
-     * Create a window for renderers to draw slice XY into
-     */
-    vtkNew<vtkGenericOpenGLRenderWindow> _renderWindow;
-
-    /**
-     * Reader for DICOM
-     */
-    vtkSmartPointer<vtkImageReader2> _reader;
-
-    /**
-     * Spline visibility
-     */
-    SplineVisibility _visibilitySpline;
-
-    /**
-     * Render window interaction for slicer
-     */
-    vtkNew<vtkRenderWindowInteractor> _renderWindowInteractor;
-
-    /**
-     * Render window interaction for spline
-     */
-    vtkNew<vtkRenderWindowInteractor> _renderInteractorForSpline;
-
-    /**
-     * Panoramic reconstruction
-     */
-    PanoramicView* _panoramicView;
 public:
     explicit SliceOrientationXY(QWidget* parent = nullptr);
 
@@ -137,6 +98,47 @@ public:
      * @note the method for callback
      */
     void CreateSplineModifiCallback();
+
+private:
+    /**
+     * Window background color
+     */
+    const double _backgroundColor[3];
+
+    /**
+     * A renderer is an object that controls the rendering process for slice
+     */
+    vtkNew<vtkRenderer> _renderer;
+
+    /**
+     * Create a window for renderers to draw slice XY into
+     */
+    vtkNew<vtkGenericOpenGLRenderWindow> _renderWindow;
+
+    /**
+     * Reader for DICOM
+     */
+    vtkSmartPointer<vtkImageReader2> _reader;
+
+    /**
+     * Spline visibility
+     */
+    SplineVisibility _visibilitySpline;
+
+    /**
+     * Render window interaction for slicer
+     */
+    vtkNew<vtkRenderWindowInteractor> _renderWindowInteractor;
+
+    /**
+     * Render window interaction for spline
+     */
+    vtkNew<vtkRenderWindowInteractor> _renderInteractorForSpline;
+
+    /**
+     * Panoramic reconstruction
+     */
+    PanoramicView* _panoramicView;
 };
 
 #endif
