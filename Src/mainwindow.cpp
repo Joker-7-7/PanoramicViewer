@@ -18,22 +18,23 @@ namespace
     }
 }
 
-MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget* parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow() { delete ui; }
-
-void MainWindow::showAboutDialog()
+MainWindow::~MainWindow()
 {
+    delete ui;
+}
+
+void MainWindow::showAboutDialog() {
 
 }
 
-void MainWindow::showOpenFileDialog()
-{
+void MainWindow::showOpenFileDialog() {
     QStringList items;
     items << tr("Single DICOM file") << tr("Multi-file directory");
 
@@ -41,79 +42,93 @@ void MainWindow::showOpenFileDialog()
     QString item = QInputDialog::getItem(this, tr("Opening mode"),
                                             tr("Select mode:"), items, 0, false, &ok);
     if (ok && !item.isEmpty())
-        openFile(item);
+        OpenData(item);
 }
 
-void MainWindow::openFile(const QString& item)
-{
+void MainWindow::OpenData(const QString& fileName) {
+    if(fileName == "Multi-file directory")
+    {
+        if(OpenDirectory() == OpeningStatus::Error) {
+            ShowErrorMassage();
+        }
+    }
+    else if(fileName == "Single DICOM file" )
+    {
+        if(OpenSingleFile() == OpeningStatus::Error) {
+            ShowErrorMassage();
+        }
+    }
+}
+
+MainWindow::OpeningStatus MainWindow::OpenSingleFile() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open file.."), "C://","*.dcm");
+    // Open file
+    QFile file(fileName);
+    file.open(QIODevice::ReadOnly);
+
+    // Return on Cancel
+    if (!file.exists())
+        return OpeningStatus::Cancel;
+
     vtkSmartPointer<vtkImageReader2> dataSet = nullptr;
 
-        if(item ==  "Multi-file directory")
-        {
-            QString directoryName = QFileDialog::getExistingDirectory(this, tr("Open folder"), "");
-            // Open directory
-            QFile file(directoryName);
-            file.open(QIODevice::ReadOnly);
+    vtkNew<vtkDICOMReader> fileReader;
+    fileReader->SetFileName(fileName.toStdString().c_str());
+    fileReader->SetMemoryRowOrderToFileNative();
+    fileReader->Update();
 
-            // Return on Cancel
-            if (!file.exists())
-                return;
-
-            vtkSmartPointer<vtkGlobFileNames> globFileNames =
-                vtkSmartPointer<vtkGlobFileNames>::New();
-            globFileNames->SetDirectory(directoryName.toStdString().c_str());
-            globFileNames->AddFileNames("*.dcm");
-
-            vtkSmartPointer<vtkDICOMFileSorter> filesSorter =
-                vtkSmartPointer<vtkDICOMFileSorter>::New();
-            filesSorter->SetInputFileNames(globFileNames->GetFileNames());
-            filesSorter->Update();
-
-            if (filesSorter->GetNumberOfSeries() != 1)
-            {
-                ShowErrorMassage();
-                return;
-            }
-
-            vtkNew<vtkDICOMReader> reader;
-            reader->SetFileNames(filesSorter->GetFileNamesForSeries(0));
-            reader->SetMemoryRowOrderToFileNative();
-            reader->Update();
-            if (reader->GetErrorCode() == 0)
-                dataSet = reader;
-            else
-                ShowErrorMassage();
-        }
-        else if(item ==  "Single DICOM file" )
-        {
-             QString fileName = QFileDialog::getOpenFileName(this, tr("Open file.."), "C://","*.dcm");
-             // Open file
-             QFile file(fileName);
-             file.open(QIODevice::ReadOnly);
-
-             // Return on Cancel
-             if (!file.exists())
-                 return;
-
-             vtkNew<vtkDICOMReader> fileReader;
-             fileReader->SetFileName(fileName.toStdString().c_str());
-             fileReader->SetMemoryRowOrderToFileNative();
-             fileReader->Update();
-             if (fileReader->GetErrorCode() == 0)
-                 dataSet = fileReader;
-             else
-                 ShowErrorMassage();
-        }
-
-        // Add data set to 3D view
-        if (dataSet != nullptr)
-        {
-            addDataSet(dataSet);
-        }
+    return CheckReader(std::move(fileReader), dataSet);
 }
 
-void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
-{
+MainWindow::OpeningStatus MainWindow::OpenDirectory() {
+    QString directoryName = QFileDialog::getExistingDirectory(this, tr("Open folder"), "");
+    // Open directory
+    QFile file(directoryName);
+    file.open(QIODevice::ReadOnly);
+
+    // Return on Cancel
+    if (!file.exists())
+        return OpeningStatus::Cancel;
+
+    vtkSmartPointer<vtkImageReader2> dataSet = nullptr;
+
+    // Open directory
+    auto globFileNames = vtkSmartPointer<vtkGlobFileNames>::New();
+    globFileNames->SetDirectory(directoryName.toStdString().c_str());
+    globFileNames->AddFileNames("*.dcm");
+
+    auto directoryReader = vtkSmartPointer<vtkDICOMDirectory>::New();
+    directoryReader->RequirePixelDataOn();
+    directoryReader->SetInputFileNames(globFileNames->GetFileNames());
+    directoryReader->Update();
+
+    if (directoryReader->GetNumberOfSeries() == 0) {
+        return OpeningStatus::Error;;
+    }
+
+    vtkNew<vtkDICOMReader> reader;
+    reader->SetFileNames(directoryReader->GetFileNamesForSeries(0));
+    reader->SetMemoryRowOrderToFileNative();
+    reader->Update();
+
+    return CheckReader(std::move(reader), dataSet);
+}
+
+MainWindow::OpeningStatus MainWindow::CheckReader(vtkSmartPointer<vtkDICOMReader> reader, vtkSmartPointer<vtkImageReader2> dataSet) {
+    if (reader->GetErrorCode() == 0) {
+        dataSet = reader;
+    }
+
+    // Add data set to 3D view
+    if (dataSet) {
+        AddDataSet(dataSet);
+        return OpeningStatus::Success;
+    }
+
+    return OpeningStatus::Error;
+}
+
+void MainWindow::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet) {
     ui->openGLPanoramicWidget->AddDataSet(dataSet);
     ui->openGLSliceXYWidget->AddDataSet(dataSet, ui->openGLPanoramicWidget);
 
@@ -121,14 +136,12 @@ void MainWindow::addDataSet(vtkSmartPointer<vtkImageReader2> dataSet)
    ui->verticalSlider->setValue(ui->openGLSliceXYWidget->reslicer->GetSliceMax() / 2);
 }
 
-void MainWindow::on_pushButton_clicked()
-{
+void MainWindow::on_pushButton_clicked() {
     ui->openGLPanoramicWidget->SetRentgenEffects();
     ui->openGLPanoramicWidget->renderWindow()->Render();
 }
 
-void MainWindow::on_pushButton_2_clicked()
-{
+void MainWindow::on_pushButton_2_clicked() {
     ui->openGLPanoramicWidget->SetSolidEffects();
     ui->openGLPanoramicWidget->renderWindow()->Render();
 }
@@ -139,14 +152,12 @@ void MainWindow::on_pushButton_3_clicked()
     ui->openGLPanoramicWidget->renderWindow()->Render();
 }
 
-void MainWindow::on_pushButton_4_clicked()
-{
+void MainWindow::on_pushButton_4_clicked() {
     ui->openGLPanoramicWidget->SetMinIntensity();
     ui->openGLPanoramicWidget->renderWindow()->Render();
 }
 
-void MainWindow::on_verticalSlider_sliderMoved(int position)
-{
+void MainWindow::on_verticalSlider_sliderMoved(int position) {
     if(ui->openGLSliceXYWidget->reslicer != nullptr)
     {
         ui->openGLSliceXYWidget->reslicer->SetSlice(position);
@@ -154,7 +165,6 @@ void MainWindow::on_verticalSlider_sliderMoved(int position)
     }
 }
 
-void MainWindow::on_pushButton_5_clicked()
-{
+void MainWindow::on_pushButton_5_clicked() {
     ui->openGLSliceXYWidget->SetSplineWidget();
 }
