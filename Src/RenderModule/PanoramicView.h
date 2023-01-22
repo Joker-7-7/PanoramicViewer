@@ -8,7 +8,6 @@
 #include <vtkDataSet.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
-#include <QVTKOpenGLNativeWidget.h>
 #include <vtkDICOMImageReader.h>
 #include <vtkDICOMReader.h>
 #include <vtkColorTransferFunction.h>
@@ -39,7 +38,8 @@
 * @author Joker-7-7
 * @since  0.1.0
  */
-class PanoramicView : public QVTKOpenGLNativeWidget {
+class PanoramicView : public QVTKOpenGLNativeWidget
+{
     Q_OBJECT
 
 public:
