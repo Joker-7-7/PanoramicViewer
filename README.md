@@ -18,7 +18,7 @@ A simple application for building multiplanar reconstruction along a curve (MPR)
 
 ![editSpline](https://user-images.githubusercontent.com/43389097/214100560-cf66e834-bd72-44d9-8787-273a2a109f51.gif)
 
-#### Navigate between layers of a wild file
+#### Navigate between layers of a DICOM file
 
 ![sliceNavigate](https://user-images.githubusercontent.com/43389097/214101775-29354c46-a8c7-4c9f-8468-523a91d9e17f.gif)
 
