@@ -1,6 +1,6 @@
 # PanoramicViewer
 ## Introduction
-A simple application for building multiplanar reconstruction along a curve (MPR). Based on the algorithm from the article [A Spline-Driven Image Slicer](https://www.vtkjournal.org/browse/publication/838).
+A simple application for building multiplanar reconstruction along a curve (MPR). Based on the algorithm from the article [A Spline-Driven Image Slicer](https://www.vtkjournal.org/browse/publication/838). Used framework for rendering vtk
 
 ## Features
 #### Open DICOM files of two kinds:
