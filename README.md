@@ -37,7 +37,7 @@ A simple application for building multiplanar reconstruction along a curve (MPR)
 
 - Max intensity
 
-![изображение](https://user-images.githubusercontent.com/43389097/214104479-2c23d503-41d2-4762-a221-297371bc79d7.png)
+![изображение](https://user-images.githubusercontent.com/43389097/214104772-a0b9b3da-0a90-4991-8023-8871bfeb984e.png)
 
 - Min intensity
 
