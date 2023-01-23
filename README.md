@@ -25,3 +25,20 @@ A simple application for building multiplanar reconstruction along a curve (MPR)
 #### Rubber band zoom
 
 ![ruberBandZoom](https://user-images.githubusercontent.com/43389097/214103166-e817bc1c-4ba2-494e-bdcd-d1f104ccde63.gif)
+
+#### Preset properties
+- Rentgen
+
+![изображение](https://user-images.githubusercontent.com/43389097/214104301-fa7044bd-496c-4432-abdc-81b7e9267aaa.png)
+
+- Solid
+
+![изображение](https://user-images.githubusercontent.com/43389097/214104402-ac0f3fbf-0bd4-4691-83ef-98ca800b2694.png)
+
+- Max intensity
+
+![изображение](https://user-images.githubusercontent.com/43389097/214104479-2c23d503-41d2-4762-a221-297371bc79d7.png)
+
+- Min intensity
+
+![изображение](https://user-images.githubusercontent.com/43389097/214104637-ec49e1a6-17c6-4478-872c-6f642195fcfd.png)
