@@ -28,7 +28,7 @@
  * @author Ggevorgyan
  * @since  0.1.0
  */
-class SliceOrientationXY : public QVTKOpenGLNativeWidget
+class SliceOrientationXY final : public QVTKOpenGLNativeWidget
 {
     Q_OBJECT
 

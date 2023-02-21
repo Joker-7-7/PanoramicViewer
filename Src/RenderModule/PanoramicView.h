@@ -38,21 +38,11 @@
 * @author Joker-7-7
 * @since  0.1.0
  */
-class PanoramicView : public QVTKOpenGLNativeWidget
+class PanoramicView final : public QVTKOpenGLNativeWidget
 {
     Q_OBJECT
 
 public:
-    /**
-     * Represents the common properties for rendering a _volume
-     */
-    vtkNew<vtkVolumeProperty> volumeProperty;
-
-    /**
-     * Array for spline vertices
-     */
-    std::vector<GraphicPrimitives::Point3D> vecPointsForSpline;
-
     /**
      * Constructs Panoramic View
      *
@@ -129,9 +119,14 @@ public slots:
 
 private:
     /**
-    * Window refresh rate when rotating the model
-    */
-    const double _desiredUpdateRate;
+     * Represents the common properties for rendering a _volume
+     */
+    vtkNew<vtkVolumeProperty> _volumeProperty;
+
+    /**
+     * Array for spline vertices
+     */
+    std::vector<GraphicPrimitives::Point3D> _splineVertices;
 
     /**
      * Window background color

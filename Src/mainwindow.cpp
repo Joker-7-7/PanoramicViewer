@@ -41,19 +41,18 @@ void MainWindow::showOpenFileDialog() {
     bool ok;
     QString item = QInputDialog::getItem(this, tr("Opening mode"),
                                             tr("Select mode:"), items, 0, false, &ok);
-    if (ok && !item.isEmpty())
+    if (ok && !item.isEmpty()) {
         OpenData(item);
+    }
 }
 
 void MainWindow::OpenData(const QString& fileName) {
-    if(fileName == "Multi-file directory")
-    {
+    if(fileName == "Multi-file directory") {
         if(OpenDirectory() == OpeningStatus::Error) {
             ShowErrorMassage();
         }
     }
-    else if(fileName == "Single DICOM file" )
-    {
+    else if(fileName == "Single DICOM file" ) {
         if(OpenSingleFile() == OpeningStatus::Error) {
             ShowErrorMassage();
         }
@@ -67,8 +66,9 @@ MainWindow::OpeningStatus MainWindow::OpenSingleFile() {
     file.open(QIODevice::ReadOnly);
 
     // Return on Cancel
-    if (!file.exists())
+    if (!file.exists()) {
         return OpeningStatus::Cancel;
+    }
 
     vtkSmartPointer<vtkImageReader2> dataSet = nullptr;
 
@@ -87,11 +87,11 @@ MainWindow::OpeningStatus MainWindow::OpenDirectory() {
     file.open(QIODevice::ReadOnly);
 
     // Return on Cancel
-    if (!file.exists())
+    if (!file.exists()) {
         return OpeningStatus::Cancel;
+    }
 
     vtkSmartPointer<vtkImageReader2> dataSet = nullptr;
-
     // Open directory
     auto globFileNames = vtkSmartPointer<vtkGlobFileNames>::New();
     globFileNames->SetDirectory(directoryName.toStdString().c_str());
@@ -146,8 +146,7 @@ void MainWindow::on_pushButton_2_clicked() {
     ui->openGLPanoramicWidget->renderWindow()->Render();
 }
 
-void MainWindow::on_pushButton_3_clicked()
-{
+void MainWindow::on_pushButton_3_clicked() {
     ui->openGLPanoramicWidget->SetMaxIntensity();
     ui->openGLPanoramicWidget->renderWindow()->Render();
 }

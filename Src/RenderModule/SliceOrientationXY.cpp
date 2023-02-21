@@ -24,16 +24,14 @@ SliceOrientationXY::SliceOrientationXY(QWidget* parent) :
     SetupRender();
 }
 
-void SliceOrientationXY::RemoveDataSet()
-{
+void SliceOrientationXY::RemoveDataSet() {
     vtkProp* actor = _renderer->GetActors()->GetLastProp();
     if (actor != nullptr) {
         _renderer->RemoveVolume(actor);
     }
 }
 
-void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, PanoramicView* panoramicView)
-{
+void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, PanoramicView* panoramicView) {
     _panoramicView = panoramicView;
     RemoveDataSet();
     _reader = dataSet;
@@ -58,8 +56,7 @@ void SliceOrientationXY::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet, Pa
     renderWindow()->Render();
 }
 
-void SliceOrientationXY::SetupRender()
-{
+void SliceOrientationXY::SetupRender() {
     // Setup rendering stuff
     _renderer->SetBackground(_backgroundColor);
 
@@ -71,8 +68,7 @@ void SliceOrientationXY::SetupRender()
     renderWindow()->AddRenderer(_renderer);
 }
 
-void SliceOrientationXY::CreateSplineModifiCallback()
-{
+void SliceOrientationXY::CreateSplineModifiCallback() {
     splineWidget->RemoveAllObservers();
     vtkNew<vtkCallbackCommand> splineCallback;
     splineCallback->SetClientData(_panoramicView);
@@ -80,30 +76,29 @@ void SliceOrientationXY::CreateSplineModifiCallback()
     splineWidget->AddObserver(vtkCommand::EndInteractionEvent, splineCallback);
 }
 
-void SliceOrientationXY::CreateSpline()
-{
+void SliceOrientationXY::CreateSpline() {
     int Z = reslicer->GetSliceMax() / 2;;// reslicer->GetSliceMax();
 
     std::vector<PointSpline> vecPointsForSpline;
     vecPointsForSpline.emplace_back(PointSpline{ 129, 385, Z });
-   // vecPointsForSpline.emplace_back(PointSpline{ 148, 323, Z });
+   // _splineVertices.emplace_back(PointSpline{ 148, 323, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 157, 290, Z });
-   // vecPointsForSpline.emplace_back(PointSpline{ 165, 250, Z });
+   // _splineVertices.emplace_back(PointSpline{ 165, 250, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 167, 204, Z });
-   // vecPointsForSpline.emplace_back(PointSpline{ 177, 162, Z });
+   // _splineVertices.emplace_back(PointSpline{ 177, 162, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 187, 130, Z });
-    //vecPointsForSpline.emplace_back(PointSpline{ 200, 93, Z });
+    //_splineVertices.emplace_back(PointSpline{ 200, 93, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 227, 65, Z });
-    //vecPointsForSpline.emplace_back(PointSpline{ 263, 56, Z });
+    //_splineVertices.emplace_back(PointSpline{ 263, 56, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 286, 54, Z });
-    //vecPointsForSpline.emplace_back(PointSpline{ 316, 58, Z });
+    //_splineVertices.emplace_back(PointSpline{ 316, 58, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 347, 79, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 367, 130, Z });
-    //vecPointsForSpline.emplace_back(PointSpline{ 377, 165, Z });
+    //_splineVertices.emplace_back(PointSpline{ 377, 165, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 384, 203, Z });
-  //  vecPointsForSpline.emplace_back(PointSpline{ 394, 249, Z });
+  //  _splineVertices.emplace_back(PointSpline{ 394, 249, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 409, 310, Z });
-  //  vecPointsForSpline.emplace_back(PointSpline{ 420, 344, Z });
+  //  _splineVertices.emplace_back(PointSpline{ 420, 344, Z });
     vecPointsForSpline.emplace_back(PointSpline{ 443, 385, Z });
 
     vtkImageData* imageCurrentData_ = _reader->GetOutput();
@@ -127,8 +122,7 @@ void SliceOrientationXY::CreateSpline()
     renderWindow()->Render();
 }
 
-void SliceOrientationXY::SetSplineWidget()
-{
+void SliceOrientationXY::SetSplineWidget() {
     if (_visibilitySpline == SplineVisibility::VisibilityOff)
     {
         splineWidget->On();

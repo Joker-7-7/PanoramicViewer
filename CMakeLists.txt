@@ -46,6 +46,13 @@ find_package(VTK 9.1 COMPONENTS REQUIRED
         RenderingAnnotation
         DICOM
         InteractionImage
+        CommonComputationalGeometry
+        CommonMath
+        CommonTransforms
+        FiltersCore
+        FiltersGeneral
+        FiltersModeling
+        FiltersSources
         )
 
 
