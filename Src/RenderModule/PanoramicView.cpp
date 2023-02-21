@@ -12,7 +12,6 @@
 
 PanoramicView::PanoramicView(QWidget* parent) :
     QVTKOpenGLNativeWidget(parent),
-    _desiredUpdateRate(30.0),
     _backgroundColor{ 0, 0, 0 }
 {
     setRenderWindow(_renderWindow.Get());
@@ -23,36 +22,38 @@ PanoramicView::PanoramicView(QWidget* parent) :
 
 void PanoramicView::CreateSpline() {
     constexpr double Z = 225;
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 129, 385, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 148, 323, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 157, 290, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 165, 250, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 167, 204, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 177, 162, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 187, 130, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 200, 93, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 227, 65, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 263, 56, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 286, 54, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 316, 58, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 347, 79, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 367, 130, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 377, 165, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 384, 203, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 394, 249, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 409, 310, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 420, 344, Z });
-    vecPointsForSpline.emplace_back(GraphicPrimitives::Point3D{ 443, 385, Z });
+    _splineVertices.insert(_splineVertices.cend(), {
+            {29, 385, Z},
+            {148, 323, Z},
+            {157, 290, Z},
+            {165, 250, Z},
+            {167, 204, Z},
+            {177, 162, Z},
+            {187, 130, Z},
+            {200, 93, Z},
+            {227, 65, Z},
+            {263, 56, Z},
+            {286, 54, Z},
+            {316, 58, Z},
+            {347, 79, Z},
+            {367, 130, Z},
+            {377, 165, Z},
+            {384, 203, Z},
+            {394, 249, Z},
+            {409, 310, Z},
+            {420, 344, Z},
+            {443, 385, Z}
+    });
 }
 
 void PanoramicView::GeneratePanoramicView(vtkParametricSpline* spline) {
     //vtkImageData* imageCurrentData_ = _reader->GetOutput();
     //vtkNew<vtkPoints> points;
-    //for (int i = 0; i < vecPointsForSpline.size(); ++i)
+    //for (int i = 0; i < _splineVertices.size(); ++i)
     //{
     //    double tmpPoint[3];
 
-    //    imageCurrentData_->TransformIndexToPhysicalPoint(reinterpret_cast<int*>(&vecPointsForSpline[i]), tmpPoint);
+    //    imageCurrentData_->TransformIndexToPhysicalPoint(reinterpret_cast<int*>(&_splineVertices[i]), tmpPoint);
     //    points->InsertNextPoint(tmpPoint);
     //}
 
@@ -67,55 +68,43 @@ void PanoramicView::GeneratePanoramicView(vtkParametricSpline* spline) {
     functionSource->SetWResolution(10 * numberOfPoints);
     functionSource->Update();
 
-    vtkSmartPointer<vtkSplineDrivenImageSlicer> sdis;
-    sdis = vtkSmartPointer<vtkSplineDrivenImageSlicer>::New();
-    sdis->SetInputConnection(0, _reader->GetOutputPort());
-    sdis->SetInputConnection(1, functionSource->GetOutputPort());
-    sdis->SetIncidence(vtkMath::Pi() / 2);
-    //sdis->SetOffsetPoint(10);
-    sdis->SetSliceExtent(300, 500);
-    sdis->SetSliceSpacing(0.15, 0.15);
-    sdis->Update();
+    auto imageSlicer = vtkSmartPointer<vtkSplineDrivenImageSlicer>::New();
+    imageSlicer->SetInputConnection(0, _reader->GetOutputPort());
+    imageSlicer->SetInputConnection(1, functionSource->GetOutputPort());
+    imageSlicer->SetIncidence(vtkMath::Pi() / 2);
+    //imageSlicer->SetOffsetPoint(10);
+    imageSlicer->SetSliceExtent(300, 500);
+    imageSlicer->SetSliceSpacing(0.15, 0.15);
+    imageSlicer->Update();
 
-    vtkSmartPointer<vtkImageAppend> append =
-        vtkSmartPointer<vtkImageAppend>::New();
+    auto imageStitching = vtkSmartPointer<vtkImageAppend>::New();
 
     int nbPoints = numberOfPoints * 10;
-    for (int ptId = 0; ptId < nbPoints; ptId++)
-    {
-        sdis->SetOffsetPoint(ptId);
+    for (int ptId = 0; ptId < nbPoints; ptId++) {
+        imageSlicer->SetOffsetPoint(ptId);
+        imageSlicer->Update();
 
-        sdis->Update();
-
-        vtkSmartPointer<vtkImageData> tempSlice =
-            vtkSmartPointer<vtkImageData>::New();
-        tempSlice->DeepCopy(sdis->GetOutput(0));
-        //tempSlice->SetDirectionMatrix(matrix);
-        append->AddInputData(tempSlice);
-
+        auto tempSlice = vtkSmartPointer<vtkImageData>::New();
+        tempSlice->DeepCopy(imageSlicer->GetOutput(0));
+        imageStitching->AddInputData(tempSlice);
     }
-    append->SetAppendAxis(2);
-    append->Update();
+    imageStitching->SetAppendAxis(2);
+    imageStitching->Update();
 
     //vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
-    //mapper->SetInputConnection(append->GetOutputPort());
+    //mapper->SetInputConnection(imageStitching->GetOutputPort());
     //mapper->SetMaximumImageSampleDistance(1.0);
     //mapper->UseJitteringOn();
 
-    _volume->GetMapper()->SetInputConnection(append->GetOutputPort());
+    _volume->GetMapper()->SetInputConnection(imageStitching->GetOutputPort());
 
     _renderer->AddVolume(_volume);
     _renderer->ResetCamera();
-
     renderWindow()->Render();
 }
 void PanoramicView::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet) {
     RemoveDataSet();
-
     SetupReader(dataSet);
-
-   // GeneratePanoramicView();
-
     SetupProperty();
 
     vtkNew<vtkGPUVolumeRayCastMapper> mapper;;
@@ -123,8 +112,6 @@ void PanoramicView::AddDataSet(vtkSmartPointer<vtkImageReader2> dataSet) {
     mapper->UseJitteringOn();
 
     _volume->SetMapper(mapper);
-
-   // renderWindow()->Render();
 }
 
 void PanoramicView::RemoveDataSet() {
@@ -145,16 +132,12 @@ void PanoramicView::SetupRender() {
 
     // link render and render window
     _renderWindow->SetSize(_renderWindow->GetScreenSize());
-    //l_render_windows->SetSize(900, 900);
 
     // Setup interactor style
     renderWindow()->GetInteractor()->SetRenderWindow(_renderWindow);
-    //renderWindow()->GetInteractor()->GetInteractorStyle()->SetDefaultRenderer(m_ptrRenderer);
     renderWindow()->AddRenderer(_renderer);
-    renderWindow()->GetInteractor()->SetDesiredUpdateRate(_desiredUpdateRate);
 
-    vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
-        vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
+    auto style = vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
     style->PickingManagedOff();
     renderWindow()->GetInteractor()->SetInteractorStyle(style);
 
@@ -176,16 +159,16 @@ void PanoramicView::SetupProperty() {
 
     m_ptrOpacityFunction->AddPoint(wl_ - ww_ / 2.0, 0.0);
     m_ptrOpacityFunction->AddPoint(wl_ + ww_ / 2.0, 1.0);
-    volumeProperty->SetColor(m_ptrColorFunction);
-    volumeProperty->SetScalarOpacity(m_ptrOpacityFunction);
-    volumeProperty->SetInterpolationTypeToLinear();
-    volumeProperty->ShadeOn();
-    volumeProperty->SetAmbient(0.15);
-    volumeProperty->SetDiffuse(0.8);
-    volumeProperty->SetSpecular(0.25);
-    volumeProperty->SetSpecularPower(40);
+    _volumeProperty->SetColor(m_ptrColorFunction);
+    _volumeProperty->SetScalarOpacity(m_ptrOpacityFunction);
+    _volumeProperty->SetInterpolationTypeToLinear();
+    _volumeProperty->ShadeOn();
+    _volumeProperty->SetAmbient(0.15);
+    _volumeProperty->SetDiffuse(0.8);
+    _volumeProperty->SetSpecular(0.25);
+    _volumeProperty->SetSpecularPower(40);
 
-    _volume->SetProperty(volumeProperty);
+    _volume->SetProperty(_volumeProperty);
 }
 
 void PanoramicView::SetRentgenEffects() {
@@ -205,7 +188,7 @@ void PanoramicView::SetRentgenEffects() {
     opacityFun->AddPoint(1000, 0.00);
     opacityFun->AddPoint(1400, 0.05);
     opacityFun->AddPoint(1800, 0.05);
-    opacityFun->AddPoint(2150, 0.25);//don't want it to be
+    opacityFun->AddPoint(2150, 0.25);
 
     colFun->AddRGBPoint(1000, 0.0, 0.0, 0.0);
     colFun->AddRGBPoint(1400, 1.0, 0.5, 0.3);
@@ -261,7 +244,7 @@ void PanoramicView::SetMaxIntensity() {
     opacityFun->AddPoint(1000, 0.00);
     opacityFun->AddPoint(1400, 0.05);
     opacityFun->AddPoint(1800, 0.05);
-    opacityFun->AddPoint(2150, 0.25);//don't want it to be
+    opacityFun->AddPoint(2150, 0.25);
 
     volumeGradientOpacity->AddPoint(0, 0.0);
     volumeGradientOpacity->AddPoint(90, 0.5);
@@ -307,6 +290,5 @@ void PanoramicView::SetMinIntensity() {
 }
 
 void PanoramicView::SetupReader(vtkSmartPointer<vtkImageReader2> reader) {
-    // save reader in first buffer
     _reader = reader;
 }
